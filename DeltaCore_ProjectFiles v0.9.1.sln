@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeltaCore_ProjectFiles v0.9.1", "DeltaCore_ProjectFiles v0.9.1.csproj", "{6EC559F6-BF57-4893-72C4-A1A5E0B23F97}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6EC559F6-BF57-4893-72C4-A1A5E0B23F97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EC559F6-BF57-4893-72C4-A1A5E0B23F97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EC559F6-BF57-4893-72C4-A1A5E0B23F97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EC559F6-BF57-4893-72C4-A1A5E0B23F97}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

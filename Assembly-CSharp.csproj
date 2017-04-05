@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <RootNamespace></RootNamespace>
+    <ProjectGuid>{3DC40B58-39FB-7237-8F42-7772163F87BD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <BaseDirectory>Assets</BaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_5_0;UNITY_5_5;UNITY_5;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VIDEO;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;DEVELOPMENT_BUILD;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;UNITY_TEAM_LICENSE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Temp\bin\Release\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UnityEngine">
+      <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+     <Compile Include="Assets\CalculateScript.cs" />
+     <Compile Include="Assets\Scripts\AesteticScritps\MovieDev.cs" />
+     <Compile Include="Assets\Scripts\AesteticScritps\SideMenuToggle.cs" />
+     <Compile Include="Assets\Scripts\AesteticScritps\VolumeSetting.cs" />
+     <Compile Include="Assets\Scripts\AnalyseScreenScript.cs" />
+     <Compile Include="Assets\Scripts\CameraTransformations.cs" />
+     <Compile Include="Assets\Scripts\Classes\CurrentLevelState.cs" />
+     <Compile Include="Assets\Scripts\Classes\LevelData.cs" />
+     <Compile Include="Assets\Scripts\Classes\MarkerData.cs" />
+     <Compile Include="Assets\Scripts\Classes\ScoreData.cs" />
+     <Compile Include="Assets\Scripts\Classes\Statics\BackEnd\AppliedFeature.cs" />
+     <Compile Include="Assets\Scripts\Classes\Statics\BackEnd\DBConnection.cs" />
+     <Compile Include="Assets\Scripts\Classes\Statics\BackEnd\Feature.cs" />
+     <Compile Include="Assets\Scripts\Classes\Statics\BackEnd\GotchaConstants.cs" />
+     <Compile Include="Assets\Scripts\Classes\Statics\BackEnd\GotchaDB.cs" />
+     <Compile Include="Assets\Scripts\Classes\Statics\BackEnd\GotchaPlayer.cs" />
+     <Compile Include="Assets\Scripts\Classes\Statics\BackEnd\HungarianAlgorithm.cs" />
+     <Compile Include="Assets\Scripts\Classes\Statics\BackEnd\PlayerFunctions.cs" />
+     <Compile Include="Assets\Scripts\Classes\Statics\BackEnd\Sample.cs" />
+     <Compile Include="Assets\Scripts\Classes\Statics\BackEnd\ScoreObject.cs" />
+     <Compile Include="Assets\Scripts\Classes\Statics\BackEnd\ScoreObjectCalculater.cs" />
+     <Compile Include="Assets\Scripts\Classes\Statics\BackEnd\User.cs" />
+     <Compile Include="Assets\Scripts\Classes\Statics\BackEnd\gf.cs" />
+     <Compile Include="Assets\Scripts\Classes\Statics\Database.cs" />
+     <Compile Include="Assets\Scripts\Classes\Statics\DeltaCore.cs" />
+     <Compile Include="Assets\Scripts\Classes\Statics\UserInfo.cs" />
+     <Compile Include="Assets\Scripts\ClickyWheel\ClickyWheelElement.cs" />
+     <Compile Include="Assets\Scripts\ClickyWheel\ClickyWheelMenu.cs" />
+     <Compile Include="Assets\Scripts\ClickyWheel\ClickyWheel_Knob.cs" />
+     <Compile Include="Assets\Scripts\ClickyWheel\ClickyWheel_Marker.cs" />
+     <Compile Include="Assets\Scripts\ClickyWheel\ClickyWheel_MyToggle.cs" />
+     <Compile Include="Assets\Scripts\ClickyWheel\ClickyWheel_Slider.cs" />
+     <Compile Include="Assets\Scripts\ClickyWheel\ClickyWheel_Toggle.cs" />
+     <Compile Include="Assets\Scripts\Debug\Debug_SceneLoader.cs" />
+     <Compile Include="Assets\Scripts\FeatureMarker.cs" />
+     <Compile Include="Assets\Scripts\FingerprintLevel.cs" />
+     <Compile Include="Assets\Scripts\ImageProcessingController.cs" />
+     <Compile Include="Assets\Scripts\MusicManagerScript.cs" />
+     <Compile Include="Assets\Scripts\UI Scripts\Debug_SecondarySideMenuManager.cs" />
+     <Compile Include="Assets\Scripts\UI Scripts\GameModeButtonScript.cs" />
+     <Compile Include="Assets\Scripts\UI Scripts\Knob.cs" />
+     <Compile Include="Assets\Scripts\UI Scripts\LevelScreenLoaderScript.cs" />
+     <Compile Include="Assets\Scripts\UI Scripts\LevelSelectButtonScript.cs" />
+     <Compile Include="Assets\Scripts\UI Scripts\LoginButtonScript.cs" />
+     <Compile Include="Assets\Scripts\UI Scripts\MyToggle.cs" />
+     <Compile Include="Assets\Scripts\UI Scripts\UIMarkerButton.cs" />
+     <Compile Include="Assets\models\RotatingAlongY.cs" />
+     <None Include="Assets\Scripts\Classes\Statics\ImageProcessing\LICENSE.txt" />
+ <Reference Include="UnityEngine.Advertisements">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.UI">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.Networking">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.PlaymodeTestsRunner">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/PlaymodeTestsRunner/UnityEngine.PlaymodeTestsRunner.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.Analytics">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.HoloLens">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.Purchasing">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityPurchasing/UnityEngine.Purchasing.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.VR">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
+ </Reference>
+ <Reference Include="MySql.Data">
+ <HintPath>D:/UnityProjects/DC_Ready/DC_Ready/DC_Analytics/Assets/Scripts/Classes/Statics/BackEnd/MySql.Data.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Data">
+ <HintPath>D:/UnityProjects/DC_Ready/DC_Ready/DC_Analytics/Assets/Scripts/Classes/Statics/BackEnd/System.Data.dll</HintPath>
+ </Reference>
+ <Reference Include="DeltaCoreImageProcessingLib">
+ <HintPath>D:/UnityProjects/DC_Ready/DC_Ready/DC_Analytics/Assets/Scripts/Classes/Statics/ImageProcessing/DeltaCoreImageProcessingLib.dll</HintPath>
+ </Reference>
+ <Reference Include="I18N">
+ <HintPath>D:/UnityProjects/DC_Ready/DC_Ready/DC_Analytics/Assets/Scripts/NeededDll/I18N.dll</HintPath>
+ </Reference>
+ <Reference Include="I18N.West">
+ <HintPath>D:/UnityProjects/DC_Ready/DC_Ready/DC_Analytics/Assets/Scripts/NeededDll/I18N.West.dll</HintPath>
+ </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  
+</Project>
