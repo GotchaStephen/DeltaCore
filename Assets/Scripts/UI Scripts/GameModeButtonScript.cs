@@ -10,19 +10,8 @@ public class GameModeButtonScript : MonoBehaviour, IPointerClickHandler {
 
     [SerializeField]
     private GameMode gameMode;
-    public static bool debugOn = false;
-    private static void localLog(string msg = "No message") { localLog("GameModeButtonScript", msg); }
-    private static void localLog(string topic, string msg)
-    {
-        if (debugOn)
-        {
-            string logEntry = string.Format("{0:F}: [{1}]{2}", System.DateTime.Now, topic, msg);
-            Debug.Log(logEntry);
-        }
-    }
 
     public void OnPointerClick(PointerEventData eventData) {
-        localLog("Loading Next Screen"); 
         LoadNextScreen();
     }
 

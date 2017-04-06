@@ -87,7 +87,7 @@ public class ImageProcessingController : MonoBehaviour {
     }
 
     public void Reset() {
-        contrast = 1;
+        contrast = 0.5f;
         brightness = 0;
         grayscale = false;
         invert = false;

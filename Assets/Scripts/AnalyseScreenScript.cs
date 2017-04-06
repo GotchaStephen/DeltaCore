@@ -29,14 +29,14 @@ public class AnalyseScreenScript : MonoBehaviour
 
     public Text userMessageText;
     public Button submitButton;
-    public DeltaCore.AnalysisDecision descision; 
+    public DeltaCore.AnalysisDecision descision;
 
     // Use this for initialization
     void Start()
     {
         instance = this;
         Load();
-        descision = DeltaCore.AnalysisDecision.NotSet; 
+        descision = DeltaCore.AnalysisDecision.NotSet;
         UserInfo.lastAction = UserInfo.UserAction.EnterLevel;
         currentLevel.LastLevelAction = DeltaCore.UserLevelAction.NoAction;
     }
@@ -54,9 +54,10 @@ public class AnalyseScreenScript : MonoBehaviour
         //load fingerprint
         // Testing on a certain level 
         fingerPrint.GetComponent<ImageProcessingController>().setSprite(currentLevel.level.fingerPrint);
-        localLog(string.Format("Loading Sample[{0}:{1}]", currentLevel.level.sampleId, currentLevel.level.id)); 
+        fingerPrint.GetComponent<ImageProcessingController>().Reset();
+        localLog(string.Format("Loading Sample[{0}:{1}]", currentLevel.level.sampleId, currentLevel.level.id));
         //Load markers
-        if ( UserInfo.currentGameMode == DeltaCore.GameMode.LatentOfTheDay)
+        if (UserInfo.currentGameMode == DeltaCore.GameMode.LatentOfTheDay)
         {
             // dont load previos markers
         }
@@ -70,7 +71,7 @@ public class AnalyseScreenScript : MonoBehaviour
         }
 
         string notesHolder = "";
-         // currentLevel.updateLevelData();
+        // currentLevel.updateLevelData();
         notesInputField.text = notesHolder;
 
         //DEBUG
@@ -81,7 +82,19 @@ public class AnalyseScreenScript : MonoBehaviour
     {
         currentLevel = null;
         instance = null;
-        SceneManager.LoadScene("03_LevelSelectScreen");
+        if ( UserInfo.currentGameMode == DeltaCore.GameMode.LatentOfTheDay)
+        {
+            SceneManager.LoadScene("15_LotdLevelSelectScreen") ;
+        }
+        else if (UserInfo.currentGameMode == DeltaCore.GameMode.Training)
+        {
+            SceneManager.LoadScene("12_TrainingLevelSelectScreen");
+        }
+        else
+        {
+            UserInfo.currentGameMode = DeltaCore.GameMode.NoGameMode; 
+            SceneManager.LoadScene("02_WelcomeScreen-GameMode");
+        }
     }
 
     public static void LogAction(string action, string tag)
@@ -126,11 +139,11 @@ public class AnalyseScreenScript : MonoBehaviour
 
     public void updateDescision(int playerDescision)
     {
-        descision = (DeltaCore.AnalysisDecision) playerDescision; 
+        descision = (DeltaCore.AnalysisDecision)playerDescision;
     }
     public void SubmitAnalysis()
     {
-        if ( descision == DeltaCore.AnalysisDecision.NotSet)
+        if (descision == DeltaCore.AnalysisDecision.NotSet)
         {
             instance.userMessageText.text = "Need to set Descion";
             localLog("Desicion Not Set");
@@ -138,18 +151,18 @@ public class AnalyseScreenScript : MonoBehaviour
         else
         {
             instance.SaveMarkers();
-            localLog("Saving to Database"); 
+            localLog("Saving to Database");
             Database.SaveLevelData(currentLevel);
             UserInfo.lastAction = UserInfo.UserAction.Submit;
             currentLevel.completed = true;
-            QuitAnalysis(); 
+            QuitAnalysis();
         }
     }
 
     public void ResetAll()
     {
-        currentLevel.completed = false ;
-        
+        currentLevel.completed = false;
+
         // Remove From Screen 
         instance.DeleteMarkers();
 
@@ -214,6 +227,6 @@ public class AnalyseScreenScript : MonoBehaviour
             if (action == DeltaCore.UserLevelAction.RemoveMarker) { fixfirstDeleteBug(affectedObject); }
             currentLevel.updateLevelData();
         }
-   }
+    }
 
 }

@@ -7,8 +7,7 @@ public class ScoreData
 {
 
     private static bool debugOn = true;
-    private static void localLog(string msg) { localLog("ScoreData", msg);  }
-    private static void localLog(string topic, string msg )
+    private static void localLog(string topic, string msg)
     {
         if (debugOn)
         {

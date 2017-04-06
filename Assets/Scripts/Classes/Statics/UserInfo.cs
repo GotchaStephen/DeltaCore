@@ -17,8 +17,8 @@ public static class UserInfo
     public static UserType userType;
     public static UserAction lastAction;
     public static DeltaCore.GameMode currentGameMode;
-    public static bool completedLOTD ;
-    public static string lotdName ;
+    public static bool completedLOTD;
+    public static string lotdName;
 
     public static void Reset()
     {

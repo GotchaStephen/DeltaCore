@@ -9,7 +9,7 @@ namespace DeltaCoreBE
         private string sampleFileExtension1 = "tif";
         private string sampleFileExtension2 = "png";
 
-        private static bool debugOn = true  ;
+        private static bool debugOn = true;
         private static void localLog(string msg) { localLog("GotchaDB", msg); }
         private static void localLog(string topic, string msg)
         {
@@ -17,7 +17,7 @@ namespace DeltaCoreBE
             {
                 string logEntry = string.Format("{0:F}: [{1}]{2}", System.DateTime.Now, topic, msg);
                 Console.WriteLine(logEntry);
-                UnityEngine.Debug.Log(logEntry); 
+                UnityEngine.Debug.Log(logEntry);
                 Console.WriteLine(logEntry);
             }
         }
@@ -747,7 +747,7 @@ namespace DeltaCoreBE
             SQLStatement = SQLStatement.Replace(":SMPL_LOTD_V_IMG_NAME", GotchaConstants.SMPL_LOTD_V_IMG_NAME);
 
             SQLStatement = string.Format(SQLStatement, pId);
-            localLog(SQLStatement); 
+            localLog(SQLStatement);
             return GenericSelectStatement(SQLStatement);
         }
 
@@ -1001,7 +1001,7 @@ namespace DeltaCoreBE
             SQLStatement = SQLStatement.Replace(":SMPL_LOTD_COMPL_TBL_USR_ID", GotchaConstants.SMPL_LOTD_COMPL_TBL_USR_ID);
             SQLStatement = SQLStatement.Replace(":SMPL_LOTD_COMPL_TBL_VERDICT", GotchaConstants.SMPL_LOTD_COMPL_TBL_VERDICT);
             SQLStatement = string.Format(SQLStatement, sampleId, playerID, verdict);
-            localLog(SQLStatement); 
+            localLog(SQLStatement);
             g.Modify(SQLStatement);
             return true;
         }

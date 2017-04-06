@@ -8,6 +8,9 @@ public class Debug_SecondarySideMenuManager : MonoBehaviour {
     [SerializeField]
     GameObject[] screens;
 
+    [HideInInspector]
+    public int currentScreen;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -22,7 +25,7 @@ public class Debug_SecondarySideMenuManager : MonoBehaviour {
         if(i<screens.Length && i >= 0) {
             Reset();
             screens[i].SetActive(true);
-          
+            currentScreen = i;
         }
     }
 

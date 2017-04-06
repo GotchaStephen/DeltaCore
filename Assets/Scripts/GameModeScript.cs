@@ -37,6 +37,7 @@ public class GameModeScript : MonoBehaviour, IPointerClickHandler
                 break;
 
             case DeltaCore.GameMode.Training:
+                loadTrainingScene(); 
                 break;
 
             case DeltaCore.GameMode.Caseworks:
@@ -53,8 +54,9 @@ public class GameModeScript : MonoBehaviour, IPointerClickHandler
                 localLog("Game Mode not found");
                 break ; 
         }
-        
+
     }
+    
     public void loadGameModeScene()
     {
         UserInfo.currentGameMode = DeltaCore.GameMode.NoGameMode;
@@ -62,16 +64,17 @@ public class GameModeScript : MonoBehaviour, IPointerClickHandler
         SceneManager.LoadScene(sceneName);
     }
 
+    public void loadTrainingScene()
+    {
+        UserInfo.currentGameMode = DeltaCore.GameMode.Training;
+        sceneName = "12_TrainingLevelSelectScreen";
+        SceneManager.LoadScene(sceneName);
+    }
+
     public void loadLOTDScene()
-   {
+    {
        UserInfo.currentGameMode = DeltaCore.GameMode.LatentOfTheDay; 
-       if (UserInfo.completedLOTD) { sceneName = "03_LevelSelectScreen"; }
-       else
-       {
-            //    AnalyseScreenScript.currentLevel = Database.LoadLevelData(Database.latentOfTheDayID);
-            sceneName = "04_AnalyseScreen";
-       }
-       sceneName = "03_LevelSelectScreen"; 
+       sceneName = "15_LotdLevelSelectScreen"; 
        SceneManager.LoadScene(sceneName);
    }
     

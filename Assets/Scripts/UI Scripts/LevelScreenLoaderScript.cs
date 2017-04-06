@@ -5,11 +5,9 @@ using System.Linq;
 
 public class LevelScreenLoaderScript : MonoBehaviour {
 
-    [SerializeField]
-    private static bool debugOn = true;
-
-    private static void localLog(string msg = "No message") { localLog("LevelScreenLoaderScript", msg); }
-    private static void localLog(string topic, string msg)
+    public bool debugOn = true;
+    private void localLog(string msg = "No message") { localLog("LevelScreenLoaderScript", msg); }
+    private void localLog(string topic, string msg)
     {
         if (debugOn)
         {
@@ -35,13 +33,27 @@ public class LevelScreenLoaderScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        localLog("Started");    
-        if( levels == null) {
-            levels = Database.DownloadLevels();
-        } else
+		if(levels == null) {
+            if ( UserInfo.currentGameMode == DeltaCore.GameMode.LatentOfTheDay)
+            {
+                levels = Database.DownloadLotdLevels(); 
+            }
+            else
+            {
+                levels = Database.DownloadTrainingLevels(); 
+            }
+        }
+        else
         {
             levels.Clear();
-            levels = Database.DownloadLevels();
+            if (UserInfo.currentGameMode == DeltaCore.GameMode.LatentOfTheDay)
+            {
+                levels = Database.DownloadLotdLevels();
+            }
+            else
+            {
+                levels = Database.DownloadTrainingLevels();
+            }
         }
 
         //DEBUG
@@ -55,6 +67,7 @@ public class LevelScreenLoaderScript : MonoBehaviour {
 
     public void ChangeDifficulty(int difficulty) {
         this.difficulty = (DeltaCore.LevelDifficulty) difficulty;
+        localLog(string.Format("Changing Difficult to {0}", this.difficulty)); 
         Load();
     }
 
@@ -67,13 +80,12 @@ public class LevelScreenLoaderScript : MonoBehaviour {
             GameObject level = Instantiate(levelPrefab);
             level.transform.SetParent(this.transform);
             LevelSelectButtonScript levelButton = level.GetComponent<LevelSelectButtonScript>();
-            localLog(string.Format("Loading [{0}:{1}][{2}]", levelsToShow[i].sampleId, levelsToShow[i].id, i )); 
-            // levelButton.SetLevel(levelsToShow[i], i);
             levelButton.SetLevel(levelsToShow[i], levelsToShow[i].sampleId);
         }
     }
 
     public void LoadAll() {
+        Reset();
         var levelsToShow = (from l in levels.Cast<FingerprintLevel>().ToList()
                             where true
                             select l).ToArray();
@@ -81,7 +93,7 @@ public class LevelScreenLoaderScript : MonoBehaviour {
             GameObject level = Instantiate(levelPrefab);
             level.transform.SetParent(this.transform);
             LevelSelectButtonScript levelButton = level.GetComponent<LevelSelectButtonScript>();
-            levelButton.SetLevel(levelsToShow[i], i);
+            levelButton.SetLevel(levelsToShow[i], levelsToShow[i].sampleId);
         }
     }
 

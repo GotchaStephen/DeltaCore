@@ -1,18 +1,19 @@
 ﻿using System;
-using System.Data ;
+using System.Data;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DeltaCoreBE; 
+using DeltaCoreBE;
 
-public static class Database {
+public static class Database
+{
 
 
     public static FingerprintLevel latentOfTheDayID;
 
     //Debug variable
     static LevelData lastLevelData;
-    
+
 
     //Debug Variable
     static Dictionary<string, LevelData> levelDictionary = new Dictionary<string, LevelData>();
@@ -28,18 +29,19 @@ public static class Database {
         }
     }
 
-    public static bool Login(string username="mahmoud.shadid@gmail.com", string password = "") {
+    public static bool Login(string username = "mahmoud.shadid@gmail.com", string password = "")
+    {
         Init();
         UserInfo.Reset();
         Player playerinfo = PlayerFunctions.playerLoginAttempt(username, password);
-        UserInfo.id= playerinfo.Id ;
-        UserInfo.username = playerinfo.Email ;
-        UserInfo.firstName = playerinfo.FirstName ;
+        UserInfo.id = playerinfo.Id;
+        UserInfo.username = playerinfo.Email;
+        UserInfo.firstName = playerinfo.FirstName;
         UserInfo.lastName = playerinfo.LastName;
         if (playerinfo.Role == 1) { UserInfo.userType = UserInfo.UserType.Expert; }
         else if (playerinfo.Role == 2) { UserInfo.userType = UserInfo.UserType.NormalUser; }
-        else { UserInfo.userType = UserInfo.UserType.Guest ;  }
-        
+        else { UserInfo.userType = UserInfo.UserType.Guest; }
+
         string s = string.Format("{0}:{1}({2}) has logged on", UserInfo.id, UserInfo.username, UserInfo.userType);
         Debug.Log(s);
         return true;
@@ -53,11 +55,12 @@ public static class Database {
         return -1;
     }
 
-    public static ArrayList DownloadLevels() {
+    public static ArrayList DownloadLotdLevels()
+    {
         ArrayList levels = new ArrayList();
 
         //Load LOTD Levels
-        string dirName = string.Format("FingerPrintLevels/LOTD/{0:yyyy}/{0:MM}", DateTime.Now);
+        string dirName = string.Format("FingerPrintLevels/LOTD/{0:yyyy}", DateTime.Now);
         Sprite[] lotdLevels = Resources.LoadAll<Sprite>(dirName);
 
         foreach (DataRow row in PlayerFunctions.getLotdSamplesForUser(UserInfo.id).Rows)
@@ -72,9 +75,9 @@ public static class Database {
             if (!string.IsNullOrEmpty(row["verdict"].ToString())) { hasbeenAnalysed = true; }
             if (Convert.ToDateTime(row["used_date"]).Date == DateTime.Now.Date) { lotdForToday = true; }
 
-            if ( lotdForToday )
+            if (lotdForToday)
             {
-                if ( hasbeenAnalysed) { UserInfo.completedLOTD = true; }
+                if (hasbeenAnalysed) { UserInfo.completedLOTD = true; }
                 else { UserInfo.completedLOTD = false; }
                 latentOfTheDayID = new FingerprintLevel(lotdLevels[index].name, lotdLevels[index], 0, DeltaCore.LevelDifficulty.Hard, DeltaCore.FingerPrintQuality.MediumLow, DeltaCore.GameMode.LatentOfTheDay, !UserInfo.completedLOTD, sampleID);
             }
@@ -93,6 +96,39 @@ public static class Database {
 
     }
 
+    public static ArrayList DownloadTrainingLevels()
+    {
+        ArrayList levels = new ArrayList();
+
+        //Load Easy Levels
+        Sprite[] easyLevels = Resources.LoadAll<Sprite>("FingerPrintLevels/Training/Easy");
+        for (int i = 0; i < easyLevels.Length; i++)
+        {
+            FingerprintLevel level = new FingerprintLevel(easyLevels[i].name, easyLevels[i], 0, DeltaCore.LevelDifficulty.Easy, DeltaCore.FingerPrintQuality.VeryHigh, DeltaCore.GameMode.Caseworks);
+            levels.Add(level);
+        }
+
+        //Load Medium Levels
+        Sprite[] mediumLevels = Resources.LoadAll<Sprite>("FingerPrintLevels/Training/Medium");
+        for (int i = 0; i < mediumLevels.Length; i++)
+        {
+            FingerprintLevel level = new FingerprintLevel(mediumLevels[i].name, mediumLevels[i], 0, DeltaCore.LevelDifficulty.Medium, DeltaCore.FingerPrintQuality.MediumHigh, DeltaCore.GameMode.Caseworks);
+            levels.Add(level);
+        }
+
+        //Load Hard Levels
+        Sprite[] hardLevels = Resources.LoadAll<Sprite>("FingerPrintLevels/Training/Hard");
+        for (int i = 0; i < hardLevels.Length; i++)
+        {
+            FingerprintLevel level = new FingerprintLevel(hardLevels[i].name, hardLevels[i], 0, DeltaCore.LevelDifficulty.Hard, DeltaCore.FingerPrintQuality.MediumLow, DeltaCore.GameMode.Caseworks);
+            levels.Add(level);
+        }
+
+        Debug.Log(string.Format("Loaded {0} Available", levels.Count));
+
+        //Return
+        return levels;
+    }
 
     public static void eraseLevelData(LevelData levelData)
     {
@@ -102,7 +138,7 @@ public static class Database {
 
         if (UserInfo.userType == UserInfo.UserType.Expert)
         {
-            PlayerFunctions.deleteAllAppliedFeaturesSampleExpert(UserInfo.id, sampleId) ;
+            PlayerFunctions.deleteAllAppliedFeaturesSampleExpert(UserInfo.id, sampleId);
         }
         else
         {
@@ -110,27 +146,28 @@ public static class Database {
         }
     }
 
-    public static void SaveLevelData(LevelData levelData) {
+    public static void SaveLevelData(LevelData levelData)
+    {
 
         #region Testing Saving to Database
 
         // Removing existing markers 
         eraseLevelData(levelData);
 
-        if ( levelData.level.id == latentOfTheDayID.id)
+        if (levelData.level.id == latentOfTheDayID.id)
         {
-            UserInfo.completedLOTD = true; 
+            UserInfo.completedLOTD = true;
         }
-        int sampleID = levelData.level.sampleId ;
+        int sampleID = levelData.level.sampleId;
         int phase = -1;
 
         string s = string.Format("Saving Marker(s) for {0}:{1}({2}) on Sample[{3}]", UserInfo.id, UserInfo.username, UserInfo.userType, sampleID);
         Debug.Log(s);
         foreach (MarkerData m in levelData.markers)
         {
-            int confidence = (int) m.confidenceLevel;
-            int orientation = (int) m.orientation;
-            int featureID = (int) m.type;
+            int confidence = (int)m.confidenceLevel;
+            int orientation = (int)m.orientation;
+            int featureID = (int)m.type;
 
             if (UserInfo.currentGameMode == DeltaCore.GameMode.LatentOfTheDay)
             {
@@ -154,7 +191,7 @@ public static class Database {
         if (UserInfo.currentGameMode == DeltaCore.GameMode.LatentOfTheDay)
         {
             localLog("Adding Descion");
-            PlayerFunctions.markLotdSampleAsCompleted( sampleID, UserInfo.id, (int)levelData.decision);
+            PlayerFunctions.markLotdSampleAsCompleted(sampleID, UserInfo.id, (int)levelData.decision);
         }
         else
         {
@@ -162,13 +199,15 @@ public static class Database {
             PlayerFunctions.markSampleAsCompleted(UserInfo.id, sampleID);
         }
 
-        
+
         #endregion
 
-        if (levelDictionary.ContainsKey(levelData.level.id)) {
+        if (levelDictionary.ContainsKey(levelData.level.id))
+        {
             levelDictionary[levelData.level.id] = levelData;
         }
-        else {
+        else
+        {
             levelDictionary.Add(levelData.level.id, levelData);
         }
     }
@@ -186,12 +225,13 @@ public static class Database {
         }
     }
 
-    public static LevelData LoadLevelData(FingerprintLevel level) {
+    public static LevelData LoadLevelData(FingerprintLevel level)
+    {
 
-        LevelData loadedLevelData; 
+        LevelData loadedLevelData;
         string s = "";
-        localLog(string.Format("GameMode:{0}", UserInfo.currentGameMode)); 
-        if ( UserInfo.currentGameMode == DeltaCore.GameMode.LatentOfTheDay)
+        localLog(string.Format("GameMode:{0}", UserInfo.currentGameMode));
+        if (UserInfo.currentGameMode == DeltaCore.GameMode.LatentOfTheDay)
         {
             level.sampleId = PlayerFunctions.getLotdSampleIDfromName(level.id);
         }
@@ -199,10 +239,10 @@ public static class Database {
         {
             level.sampleId = PlayerFunctions.getSampleIDfromName(level.id);
         }
-        
-        localLog(string.Format("Loading [{0}:{1}]", level.sampleId, level.id)) ; 
-        if (levelDictionary.ContainsKey(level.id)){ loadedLevelData = levelDictionary[level.id] ;}
-        else{loadedLevelData = new LevelData(level);}
+
+        localLog(string.Format("Loading [{0}:{1}]", level.sampleId, level.id));
+        if (levelDictionary.ContainsKey(level.id)) { loadedLevelData = levelDictionary[level.id]; }
+        else { loadedLevelData = new LevelData(level); }
 
         loadedLevelData.completed = PlayerFunctions.isSampleCompleted(UserInfo.id, level.sampleId);
         loadedLevelData.ready = PlayerFunctions.isSampleReady(level.sampleId);
@@ -227,34 +267,35 @@ public static class Database {
         // Adding markers if completed
         if (loadedLevelData.completed)
         {
-            loadedLevelData.markers.Clear() ; 
-            List<AppliedFeature> appliedFeatureList ;
+            loadedLevelData.markers.Clear();
+            List<AppliedFeature> appliedFeatureList;
             if (UserInfo.userType == UserInfo.UserType.Expert)
             {
                 appliedFeatureList = PlayerFunctions.getFeaturesForExpertSample(UserInfo.id, level.sampleId);
             }
             else
             {
-                LoadLevelDataPlayerMarkers(level, ref loadedLevelData.markers) ;
-                return loadedLevelData ; 
+                LoadLevelDataPlayerMarkers(level, ref loadedLevelData.markers);
+                return loadedLevelData;
             }
 
             s = string.Format("{0} features found on Completed sample[{1}:{2}]", appliedFeatureList.Count, level.sampleId, level.id);
             Debug.Log(s);
             foreach (AppliedFeature af in appliedFeatureList)
             {
-                float lX = af.LocationX ;
-                float lY = af.LocationY ;
-                bool hasOrientation = false; 
-                if (af.Direction != 0){ hasOrientation = true;  }
-                loadedLevelData.markers.Add(new MarkerData(lX, lY, (DeltaCore.MarkerType)af.FeatureID, (DeltaCore.MarkerConfidence)af.Confidence, hasOrientation, af.Direction)); 
+                float lX = af.LocationX;
+                float lY = af.LocationY;
+                bool hasOrientation = false;
+                if (af.Direction != 0) { hasOrientation = true; }
+                loadedLevelData.markers.Add(new MarkerData(lX, lY, (DeltaCore.MarkerType)af.FeatureID, (DeltaCore.MarkerConfidence)af.Confidence, hasOrientation, af.Direction));
             }
         }
-        return loadedLevelData ;
+        return loadedLevelData;
     }
 
 
-    private static void Init() {
+    private static void Init()
+    {
 
     }
 }

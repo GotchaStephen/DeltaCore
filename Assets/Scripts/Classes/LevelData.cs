@@ -7,8 +7,8 @@ public class LevelData
 {
 
     private static bool debugOn = true;
-    private static void localLog(string msg) { localLog("LevelData", msg);  }
-    private static void localLog(string topic, string msg )
+    private static void localLog(string msg) { localLog("LevelData", msg); }
+    private static void localLog(string topic, string msg)
     {
         if (debugOn)
         {
@@ -17,7 +17,7 @@ public class LevelData
         }
     }
 
-	
+
     private enum LevelProgress { Stage1, Stage2, Stage3, Completed, Perfected }
     private const int stage2Value = 350;
     private const int stage3Value = 550;
