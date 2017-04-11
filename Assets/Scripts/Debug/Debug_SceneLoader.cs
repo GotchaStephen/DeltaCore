@@ -7,14 +7,16 @@ using UnityEngine.SceneManagement;
 
 public class Debug_SceneLoader : MonoBehaviour, IPointerClickHandler {
 
-    public int sceneIndex;
+    // public int sceneIndex;
+	public string sceneName = "NotSet" ; 
 
     public void OnPointerClick(PointerEventData eventData) {
 
         // NUN Guest Login
-        if (UserInfo.id == 0 ){ Database.Login(); }
-        
-        SceneManager.LoadScene(sceneIndex);
+		if (!sceneName.Equals ("NotSet")) {
+			SceneManager.LoadScene(sceneName);
+		}
+	   //     SceneManager.LoadScene(sceneIndex);
     }
 
     // Use this for initialization

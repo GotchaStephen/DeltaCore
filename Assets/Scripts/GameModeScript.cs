@@ -11,7 +11,7 @@ public class GameModeScript : MonoBehaviour, IPointerClickHandler
     public DeltaCore.GameMode selectedGameMode;
 
 
-    public static bool debugOn = false;
+    public static bool debugOn = true;
     private static void localLog(string msg = "No message") { localLog("GameModeScript", msg); }
     private static void localLog(string topic, string msg)
     {
@@ -25,7 +25,10 @@ public class GameModeScript : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         localLog(string.Format("Loading {0}", selectedGameMode));
-        if (UserInfo.id == 0) { Database.Login(); }
+        if (UserInfo.id == 0) {
+			localLog(string.Format("logging Guest"));
+			Database.Login(); 
+		}
         UserInfo.currentGameMode = selectedGameMode ;
         switch (selectedGameMode)
         {
