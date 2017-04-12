@@ -84,7 +84,7 @@ public class AnalyseScreenScript : MonoBehaviour
         instance = null;
         if ( UserInfo.currentGameMode == DeltaCore.GameMode.LatentOfTheDay)
         {
-            SceneManager.LoadScene("15_LotdLevelSelectScreen") ;
+			GameModeScript.loadLOTDScene();
         }
         else if (UserInfo.currentGameMode == DeltaCore.GameMode.Training)
         {

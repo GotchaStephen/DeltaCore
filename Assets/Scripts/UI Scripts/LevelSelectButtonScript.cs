@@ -79,6 +79,12 @@ public class LevelSelectButtonScript : MonoBehaviour, IPointerClickHandler {
     public void OnPointerClick(PointerEventData eventData) {
         AnalyseScreenScript.currentLevel = Database.LoadLevelData(level);
         //CurrentLevelState.currentLevel = level;
-        SceneManager.LoadScene("04_AnalyseScreen");
+		if (UserInfo.currentGameMode == DeltaCore.GameMode.LatentOfTheDay) {
+			SceneManager.LoadScene ("52_LotdAnalyseScreen");
+		} else {			
+			SceneManager.LoadScene ("04_AnalyseScreen");
+		}
     }
 }
+
+

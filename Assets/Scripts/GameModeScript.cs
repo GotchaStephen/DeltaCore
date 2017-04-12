@@ -7,9 +7,9 @@ using UnityEngine.SceneManagement;
 public class GameModeScript : MonoBehaviour, IPointerClickHandler
 {
 
-    private string sceneName = "NotSet";
+	private static GameModeScript instance;
+	private string sceneName = "NotSet";
     public DeltaCore.GameMode selectedGameMode;
-
 
     public static bool debugOn = true;
     private static void localLog(string msg = "No message") { localLog("GameModeScript", msg); }
@@ -21,6 +21,8 @@ public class GameModeScript : MonoBehaviour, IPointerClickHandler
             Debug.Log(logEntry);
         }
     }
+
+
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -35,8 +37,13 @@ public class GameModeScript : MonoBehaviour, IPointerClickHandler
             case DeltaCore.GameMode.NoGameMode:
                 loadGameModeScene(); 
                 break;
+		
+			case DeltaCore.GameMode.WelcomeScreen:
+				loadGameModeScene(); 
+				break;
 
-            case DeltaCore.GameMode.Tutorial:
+			case DeltaCore.GameMode.Tutorial:
+				loadTutorialScene();
                 break;
 
             case DeltaCore.GameMode.Training:
@@ -60,27 +67,36 @@ public class GameModeScript : MonoBehaviour, IPointerClickHandler
 
     }
     
-    public void loadGameModeScene()
+	static public void loadGameModeScene()
     {
         UserInfo.currentGameMode = DeltaCore.GameMode.NoGameMode;
-        sceneName = "02_WelcomeScreen-GameMode";
-        SceneManager.LoadScene(sceneName);
+		instance.sceneName = "02_WelcomeScreen-GameMode";
+		SceneManager.LoadScene(instance.sceneName);
     }
 
-    public void loadTrainingScene()
+	static public void loadTutorialScene()
+	{
+		UserInfo.currentGameMode = DeltaCore.GameMode.NoGameMode;
+		instance.sceneName = "05_Introvideo" ;
+		SceneManager.LoadScene(instance.sceneName);
+	}
+
+	static public void loadTrainingScene()
     {
         UserInfo.currentGameMode = DeltaCore.GameMode.Training;
-        sceneName = "12_TrainingLevelSelectScreen";
-        SceneManager.LoadScene(sceneName);
+		instance.sceneName = "21_TrainingLevelSelectScreen";
+		SceneManager.LoadScene(instance.sceneName);
     }
 
-    public void loadLOTDScene()
+    static public void loadLOTDScene()
     {
-       UserInfo.currentGameMode = DeltaCore.GameMode.LatentOfTheDay; 
-       sceneName = "15_LotdLevelSelectScreen"; 
-       SceneManager.LoadScene(sceneName);
-   }
+       	UserInfo.currentGameMode = DeltaCore.GameMode.LatentOfTheDay; 
+		instance.sceneName = "51_LotdLevelSelectScreen"; 
+		SceneManager.LoadScene(instance.sceneName);
+   	}
     
-    void Start () {}
+    void Start () {
+		instance = this;
+	}
 	void Update () {}
 }

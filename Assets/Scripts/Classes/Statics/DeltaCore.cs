@@ -5,7 +5,7 @@ using UnityEngine;
 public static class DeltaCore
 {
 
-    public enum GameMode { Tutorial, Training, Caseworks, ColdCases, LatentOfTheDay, NoGameMode };
+    public enum GameMode { Tutorial, Training, Caseworks, ColdCases, LatentOfTheDay, NoGameMode , WelcomeScreen };
 
     public enum LevelDifficulty { Easy, Medium, Hard, Expert, NA };
 
