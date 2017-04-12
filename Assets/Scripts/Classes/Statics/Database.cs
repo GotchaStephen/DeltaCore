@@ -19,7 +19,7 @@ public static class Database
     static Dictionary<string, LevelData> levelDictionary = new Dictionary<string, LevelData>();
 
     private static bool debugOn = true;
-    private static void localLog(string msg = "No message") { localLog("Database", msg); }
+    private static void localLog(string msg) { localLog("Database", msg); }
     private static void localLog(string topic, string msg)
     {
         if (debugOn)
@@ -133,9 +133,8 @@ public static class Database
     public static void eraseLevelData(LevelData levelData)
     {
         int sampleId = levelData.level.sampleId;
-        string s = string.Format("Erasing Marker(s) for {0}:{1}({2}) on Sample[{3}]", UserInfo.id, UserInfo.username, UserInfo.userType, sampleId);
-        Debug.Log(s);
-
+		localLog(string.Format("Erasing Marker(s) for {0}:{1}({2}) on Sample[{3}]", UserInfo.id, UserInfo.username, UserInfo.userType, sampleId));
+        
         if (UserInfo.userType == UserInfo.UserType.Expert)
         {
             PlayerFunctions.deleteAllAppliedFeaturesSampleExpert(UserInfo.id, sampleId);
@@ -144,6 +143,7 @@ public static class Database
         {
             PlayerFunctions.deleteAllAppliedFeaturesSamplePlayer(UserInfo.id, sampleId);
         }
+		localLog (string.Format ("Marker(s) Erased\t for {0}:{1}({2}) on Sample[{3}]", UserInfo.id, UserInfo.username, UserInfo.userType, sampleId));
     }
 
     public static void SaveLevelData(LevelData levelData)
@@ -153,16 +153,15 @@ public static class Database
 
         // Removing existing markers 
         eraseLevelData(levelData);
-
-        if (levelData.level.id == latentOfTheDayID.id)
+		if ( latentOfTheDayID != null && levelData.level.id == latentOfTheDayID.id)
         {
             UserInfo.completedLOTD = true;
         }
         int sampleID = levelData.level.sampleId;
         int phase = -1;
 
-        string s = string.Format("Saving Marker(s) for {0}:{1}({2}) on Sample[{3}]", UserInfo.id, UserInfo.username, UserInfo.userType, sampleID);
-        Debug.Log(s);
+		localLog(string.Format("Saving Marker(s) for {0}:{1}({2}) on Sample[{3}]", UserInfo.id, UserInfo.username, UserInfo.userType, sampleID));
+        
         foreach (MarkerData m in levelData.markers)
         {
             int confidence = (int)m.confidenceLevel;
