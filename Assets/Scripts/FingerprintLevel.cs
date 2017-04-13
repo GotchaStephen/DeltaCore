@@ -33,4 +33,8 @@ public class FingerprintLevel
         this.sampleId = sampleId;
         this.isLatentOfTheDay = isLatentOfTheDay;
     }
+    public override string ToString()
+    {
+        return String.Format("FingerprintLevel [{0}:{1}]", id, sampleId);
+    }
 }

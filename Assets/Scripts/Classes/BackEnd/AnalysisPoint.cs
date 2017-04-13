@@ -58,7 +58,16 @@ namespace DeltaCoreBE
 			this.direction = dir;
 			this.feature = feat;
 		}
-		public override string ToString()
+        public AnalysisPoint(MarkerData md)
+        {
+            this.locationX = md.position.x ;
+            this.locationY = md.position.y;
+            this.confidence = (float) md.confidenceLevel;
+            this.direction = md.orientation;
+            this.feature = (int) md.type;
+        }
+
+        public override string ToString()
 		{
 			return String.Format("[Loc:({0},{1}):][C:{2}][D:{3}]", locationX, locationY, confidence, direction);
 		}
@@ -113,8 +122,7 @@ namespace DeltaCoreBE
 			LocationY = y;
 		}
 	}
-
-	public class FingerPrintAnalysisPoint : AnalysisPoint
+    public class FingerPrintAnalysisPoint : AnalysisPoint
 	{
 		private static bool debugOn = true;
 		private static void localLog(string msg) { localLog("FingerPrintAnalysisPoint", msg); }
@@ -128,7 +136,8 @@ namespace DeltaCoreBE
 		}
 
 		public FingerPrintAnalysisPoint() : base() { }
-		public FingerPrintAnalysisPoint(float x, float y, float conf, float dir, int feat) : base(x, y, conf, dir, feat)
+        public FingerPrintAnalysisPoint(MarkerData md) : base(md) { }
+        public FingerPrintAnalysisPoint(float x, float y, float conf, float dir, int feat) : base(x, y, conf, dir, feat)
 		{ }
 
 		public FingerPrintAnalysisPoint(FingerPrintAnalysisPoint fpap)

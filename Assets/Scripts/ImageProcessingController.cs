@@ -50,28 +50,39 @@ public class ImageProcessingController : MonoBehaviour {
         loadingDisplayer.SetActive(false);
     }
 
+    private void logAction(string action, string tag = "")
+    {
+        if ( UserInfo.currentGameMode == DeltaCore.GameMode.Training)
+        {
+            TrainingAnalyseScreenScript.LogAction(action, tag);
+        }
+        else
+        {
+            AnalyseScreenScript.LogAction(action, tag);
+        }
+    }
     public void SetBrightness(float brightness) {
         this.brightness = brightness;
         Process();
-        AnalyseScreenScript.LogAction("Fingerprint has now a brightness level of: " + brightness, "imageProcessing");
+        logAction("Fingerprint has now a brightness level of: " + brightness, "imageProcessing");
     }
 
     public void SetContrast(float contrast) {
         this.contrast = contrast;
         Process();
-        AnalyseScreenScript.LogAction("Fingerprint has now a contrast level of: " + contrast, "imageProcessing");
+        logAction("Fingerprint has now a contrast level of: " + contrast, "imageProcessing");
     }
 
     public void SetGrayScale(bool grayscale) {
         this.grayscale = grayscale;
         Process();
-        AnalyseScreenScript.LogAction("Fingerprint grayscale: " + grayscale, "imageProcessing");
+        logAction("Fingerprint grayscale: " + grayscale, "imageProcessing");
     }
 
     public void SetInvert(bool invert) {
         this.invert = invert;
         Process();
-        AnalyseScreenScript.LogAction("Fingerprint invert: " + invert, "imageProcessing");
+        logAction("Fingerprint invert: " + invert, "imageProcessing");
     }
 
     public void SetGamma(bool gamma) {
@@ -93,7 +104,7 @@ public class ImageProcessingController : MonoBehaviour {
         invert = false;
         gamma = false;
         Process();
-        AnalyseScreenScript.LogAction("Fingerprint has been reset to defult values", "imageProcessing");
+        logAction("Fingerprint has been reset to defult values", "imageProcessing");
     }
 
 

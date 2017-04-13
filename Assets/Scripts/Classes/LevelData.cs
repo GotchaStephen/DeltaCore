@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DeltaCoreBE;
@@ -17,6 +18,15 @@ public class LevelData
         }
     }
 
+    public FingerprintLevel level;
+    public ScoreData scoreData; // Need to remove and replace with class
+    public ArrayList markers;
+    public bool loadedSolution;
+
+    // New Code 
+    public List<FingerPrintAnalysisPoint> solutionPoints;
+
+
 
     private enum LevelProgress { Stage1, Stage2, Stage3, Completed, Perfected }
     private const int stage2Value = 350;
@@ -25,11 +35,7 @@ public class LevelData
     private const int completedValue = 551;
     private const int perfectedValue = 750;
 
-    public FingerprintLevel level;
-    public ScoreData scoreData;
-    public ArrayList markers;
-    public bool loadedSolution;
-
+    
     public string actionsLog;
     public string userNotes;
 
@@ -76,6 +82,9 @@ public class LevelData
         loadedSolution = false;
         canSubmit = false;
         progress = LevelProgress.Stage1;
+
+        // New Code
+        solutionPoints = new List<FingerPrintAnalysisPoint>(); 
     }
 
     public void LogAction(string s)
@@ -100,4 +109,8 @@ public class LevelData
     }
 
     public void resetMarkers() { markers.Clear(); }
+    public override string ToString()
+    {
+        return String.Format("CurrentLevel[{0}]", level);
+    }
 }

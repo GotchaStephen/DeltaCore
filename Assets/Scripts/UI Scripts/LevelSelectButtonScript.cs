@@ -24,6 +24,17 @@ using UnityEngine.SceneManagement;
 
 public class LevelSelectButtonScript : MonoBehaviour, IPointerClickHandler {
 
+    public bool debugOn = false;
+    private void localLog(string msg ) { localLog("LevelSelectButtonScript", msg); }
+    private void localLog(string topic, string msg)
+    {
+        if (debugOn)
+        {
+            string logEntry = string.Format("{0:F}:[{1}] {2}", System.DateTime.Now, topic, msg);
+            Debug.Log(logEntry);
+        }
+    }
+
     [SerializeField]
     Sprite spriteDifficultyEasy, spriteDifficultyMedium, spriteDifficultyHard, spriteDifficultyExpert;
 
@@ -77,12 +88,19 @@ public class LevelSelectButtonScript : MonoBehaviour, IPointerClickHandler {
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        AnalyseScreenScript.currentLevel = Database.LoadLevelData(level);
-        //CurrentLevelState.currentLevel = level;
-		if (UserInfo.currentGameMode == DeltaCore.GameMode.LatentOfTheDay) {
-			SceneManager.LoadScene ("52_LotdAnalyseScreen");
-		} else {			
-			SceneManager.LoadScene ("04_AnalyseScreen");
+
+        LevelData levelToLoad = Database.LoadLevelData(level);
+        localLog(String.Format("Level Selected {0}", levelToLoad));
+        localLog(String.Format("Game Mode {0}", UserInfo.currentGameMode));
+
+        if ( UserInfo.currentGameMode == DeltaCore.GameMode.LatentOfTheDay)
+        {
+            AnalyseScreenScript.currentLevel = levelToLoad ;
+            SceneManager.LoadScene ("52_LotdAnalyseScreen");
+		} else if  ( UserInfo.currentGameMode == DeltaCore.GameMode.Training)
+        {
+            TrainingAnalyseScreenScript.currentLevel = levelToLoad ;
+            SceneManager.LoadScene ("22_TrainingAnalyseScreen");
 		}
     }
 }

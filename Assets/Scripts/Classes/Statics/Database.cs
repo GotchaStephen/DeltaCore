@@ -18,7 +18,7 @@ public static class Database
     //Debug Variable
     static Dictionary<string, LevelData> levelDictionary = new Dictionary<string, LevelData>();
 
-    private static bool debugOn = true;
+    private static bool debugOn = false ;
     private static void localLog(string msg) { localLog("Database", msg); }
     private static void localLog(string topic, string msg)
     {
@@ -250,8 +250,8 @@ public static class Database
         if (loadedLevelData.ready)
         {
             List<AppliedFeature> appliedFeatureList = PlayerFunctions.getSolutionFeaturesForSample(level.sampleId);
-            s = string.Format("{0} features found on Ready sample[{1}:{2}]", appliedFeatureList.Count, level.sampleId, level.id);
-            Debug.Log(s);
+            localLog(string.Format("{0} features found on Ready sample[{1}:{2}]", appliedFeatureList.Count, level.sampleId, level.id));
+            
             loadedLevelData.scoreData.clearsolutionMarkers();
             foreach (AppliedFeature af in appliedFeatureList)
             {
@@ -260,6 +260,7 @@ public static class Database
                 bool hasOrientation = false;
                 if (af.Direction != 0) { hasOrientation = true; }
                 loadedLevelData.scoreData.solutionMarkers.Add(new MarkerData(lX, lY, (DeltaCore.MarkerType)af.FeatureID, (DeltaCore.MarkerConfidence)af.Confidence, hasOrientation, af.Direction));
+                loadedLevelData.solutionPoints.Add(new FingerPrintAnalysisPoint(af));
             }
         }
 

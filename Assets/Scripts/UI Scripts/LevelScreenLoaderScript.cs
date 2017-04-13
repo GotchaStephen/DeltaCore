@@ -5,13 +5,13 @@ using System.Linq;
 
 public class LevelScreenLoaderScript : MonoBehaviour {
 
-    public bool debugOn = true;
+    public bool debugOn = false ;
     private void localLog(string msg = "No message") { localLog("LevelScreenLoaderScript", msg); }
     private void localLog(string topic, string msg)
     {
         if (debugOn)
         {
-            string logEntry = string.Format("{0:F}: [{1}]{2}", System.DateTime.Now, topic, msg);
+            string logEntry = string.Format("{0:F}:[{1}] {2}", System.DateTime.Now, topic, msg);
             Debug.Log(logEntry);
         }
     }
@@ -81,6 +81,7 @@ public class LevelScreenLoaderScript : MonoBehaviour {
             level.transform.SetParent(this.transform);
             LevelSelectButtonScript levelButton = level.GetComponent<LevelSelectButtonScript>();
             levelButton.SetLevel(levelsToShow[i], levelsToShow[i].sampleId);
+            localLog(string.Format("Loading {0}", levelsToShow[i])); 
         }
     }
 

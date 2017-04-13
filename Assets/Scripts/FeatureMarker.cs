@@ -74,9 +74,21 @@ public class FeatureMarker : MonoBehaviour, IPointerClickHandler, IDragHandler, 
         type = md.type;
         isInPlacingMode = false;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    private void logAction(string action, string tag = "")
+    {
+        if (UserInfo.currentGameMode == DeltaCore.GameMode.Training)
+        {
+            TrainingAnalyseScreenScript.LogAction(action, tag);
+        }
+        else
+        {
+            AnalyseScreenScript.LogAction(action, tag);
+        }
+    }
+
+    // Update is called once per frame
+    void Update () {
         //THIS CODE SHOULD BE PLACED ONLY WHEN THE TYPE OF THE MARKER IS CHANGED
         //IT IS HERE JUST FOR PROTOTYPING TEST
         CameraTransformations ct = FindObjectOfType<CameraTransformations>();
@@ -124,15 +136,15 @@ public class FeatureMarker : MonoBehaviour, IPointerClickHandler, IDragHandler, 
         switch (confidenceLevel) {
             case DeltaCore.MarkerConfidence.Low:
                 confidenceLevel = DeltaCore.MarkerConfidence.Medium;
-                AnalyseScreenScript.LogAction("Marker in position: " + transform.localPosition + " has changed confidence level into Medium", "marker");
+                logAction("Marker in position: " + transform.localPosition + " has changed confidence level into Medium", "marker");
                 break;
             case DeltaCore.MarkerConfidence.Medium:
                 confidenceLevel = DeltaCore.MarkerConfidence.High;
-                AnalyseScreenScript.LogAction("Marker in position: " + transform.localPosition + " has changed confidence level into High", "marker");
+                logAction("Marker in position: " + transform.localPosition + " has changed confidence level into High", "marker");
                 break;
             case DeltaCore.MarkerConfidence.High:
                 confidenceLevel = DeltaCore.MarkerConfidence.Low;
-                AnalyseScreenScript.LogAction("Marker in position: " + transform.localPosition + " has changed confidence level into Low", "marker");
+                logAction("Marker in position: " + transform.localPosition + " has changed confidence level into Low", "marker");
                 break;
         }
     }
@@ -174,23 +186,32 @@ public class FeatureMarker : MonoBehaviour, IPointerClickHandler, IDragHandler, 
 
     public void OnEndDrag(PointerEventData eventData) {
         transform.SetAsFirstSibling();
-        AnalyseScreenScript.LogAction("Marker placed in position: " + transform.localPosition, "marker");
+        logAction("Marker placed in position: " + transform.localPosition, "marker");
+    }
+
+    private void updateAction(DeltaCore.UserLevelAction action, GameObject lastObjectAccessed)
+    {
+        if ( UserInfo.currentGameMode == DeltaCore.GameMode.Training)
+        {
+            TrainingAnalyseScreenScript.updateAction(action, lastObjectAccessed);
+        } else
+        {
+            AnalyseScreenScript.updateAction(action, lastObjectAccessed);
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData) {
         GameObject lastObjectAccessed;  
 
-        #region Testing functions 
-
-        #endregion
 
         //isInPlacingMode = false;
         if (isInPlacingMode && eventData.button == PointerEventData.InputButton.Left) {
             lastObjectAccessed = Instantiate(gameObject, transform.parent);
             isInPlacingMode = false ;
-            AnalyseScreenScript.LogAction("Marker has been created in position: " + transform.localPosition + " with confidence level of: " + confidenceLevel.ToString(), "marker");
+            logAction("Marker has been created in position: " + transform.localPosition + " with confidence level of: " + confidenceLevel.ToString(), "marker");
             // Score Calculation after each Add
-            AnalyseScreenScript.updateAction(DeltaCore.UserLevelAction.AddMarker, lastObjectAccessed);
+            updateAction(DeltaCore.UserLevelAction.AddMarker, lastObjectAccessed);
+            
             return;     
         }
 
@@ -198,12 +219,12 @@ public class FeatureMarker : MonoBehaviour, IPointerClickHandler, IDragHandler, 
         //Left Contorl and Left Mouse 
         if (eventData.button == PointerEventData.InputButton.Left && Input.GetKey(KeyCode.LeftControl)) {
             if (Input.GetKey(KeyCode.LeftControl)){
-                lastObjectAccessed = gameObject; 
-                AnalyseScreenScript.LogAction("Marker in position: " + transform.localPosition + " has been erased", "marker");
+                lastObjectAccessed = gameObject;
+                logAction("Marker in position: " + transform.localPosition + " has been erased", "marker");
                 //Erase Marker
                 GameObject.Destroy(gameObject);
                 // Score Calculation after each Remove
-                AnalyseScreenScript.updateAction(DeltaCore.UserLevelAction.RemoveMarker, lastObjectAccessed);
+                updateAction(DeltaCore.UserLevelAction.RemoveMarker, lastObjectAccessed);
                 return;
             }
         }

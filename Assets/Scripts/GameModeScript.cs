@@ -69,14 +69,14 @@ public class GameModeScript : MonoBehaviour, IPointerClickHandler
     
 	static public void loadGameModeScene()
     {
-        UserInfo.currentGameMode = DeltaCore.GameMode.NoGameMode;
+        UserInfo.currentGameMode = DeltaCore.GameMode.WelcomeScreen;
 		instance.sceneName = "02_WelcomeScreen-GameMode";
 		SceneManager.LoadScene(instance.sceneName);
     }
 
 	static public void loadTutorialScene()
 	{
-		UserInfo.currentGameMode = DeltaCore.GameMode.NoGameMode;
+		UserInfo.currentGameMode = DeltaCore.GameMode.Tutorial;
 		instance.sceneName = "05_Introvideo" ;
 		SceneManager.LoadScene(instance.sceneName);
 	}
