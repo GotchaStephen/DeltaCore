@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,25 +6,21 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using DeltaCoreBE;
 
-
-
-public class TrainingAnalyseScreenScript : MonoBehaviour
+public class AnalyseScreenScript : MonoBehaviour
 {
     [SerializeField]
     public static bool debugOn = true;
-    private static void localLog(string msg) { localLog("TrainingAnalyseScreenScript", msg); }
+    private static void localLog(string msg = "No message") { localLog("AnalyseScreenScript", msg); }
     private static void localLog(string topic, string msg)
     {
         if (debugOn)
         {
-            string logEntry = string.Format("{0:F}: [{1}] {2}", System.DateTime.Now, topic, msg);
+            string logEntry = string.Format("{0:F}: [{1}]{2}", System.DateTime.Now, topic, msg);
             Debug.Log(logEntry);
         }
     }
 
-    private static TrainingAnalyseScreenScript instance;
-    private FingerPrintTrainingGameManager trainingGM ; 
-
+    private static AnalyseScreenScript instance;
     public static LevelData currentLevel;
 
     public GameObject fingerPrint;
@@ -33,14 +28,17 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
     public InputField notesInputField;
 
     public Text userMessageText;
-    
+    public Button submitButton;
+    public DeltaCore.AnalysisDecision descision;
+
     // Use this for initialization
     void Start()
     {
         instance = this;
         Load();
+        descision = DeltaCore.AnalysisDecision.NotSet;
         UserInfo.lastAction = UserInfo.UserAction.EnterLevel;
-        // currentLevel.LastLevelAction = DeltaCore.UserLevelAction.NoAction;
+        currentLevel.LastLevelAction = DeltaCore.UserLevelAction.NoAction;
     }
 
     // Update is called once per frame
@@ -51,23 +49,29 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
 
     public void Load()
     {
-        localLog(String.Format("Loading {0}", currentLevel));
-        
+        //fingerPrint.GetComponent<ImageProcessingController>().setSprite(CurrentLevelState.currentLevel.fingerPrint);
+
         //load fingerprint
         // Testing on a certain level 
         fingerPrint.GetComponent<ImageProcessingController>().setSprite(currentLevel.level.fingerPrint);
         fingerPrint.GetComponent<ImageProcessingController>().Reset();
+        localLog(string.Format("Loading Sample[{0}:{1}]", currentLevel.level.sampleId, currentLevel.level.id));
         //Load markers
-        foreach (MarkerData md in currentLevel.markers)
+        if (UserInfo.currentGameMode == DeltaCore.GameMode.LatentOfTheDay)
         {
-            GameObject marker = Instantiate(featureMarkerPrefab, fingerPrint.transform);
-            marker.GetComponent<FeatureMarker>().Init(md);
+            // dont load previos markers
+        }
+        else
+        {
+            foreach (MarkerData md in currentLevel.markers)
+            {
+                GameObject marker = Instantiate(featureMarkerPrefab, fingerPrint.transform);
+                marker.GetComponent<FeatureMarker>().Init(md);
+            }
         }
 
-        // Loading Markers ( User and Solution )
-        trainingGM = new FingerPrintTrainingGameManager(currentLevel.markers, currentLevel.solutionPoints) ;
-
         string notesHolder = "";
+        // currentLevel.updateLevelData();
         notesInputField.text = notesHolder;
 
         //DEBUG
@@ -78,7 +82,19 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
     {
         currentLevel = null;
         instance = null;
-        GameModeScript.loadTrainingScene(); 
+        if ( UserInfo.currentGameMode == DeltaCore.GameMode.LatentOfTheDay)
+        {
+			GameModeScript.loadLOTDScene();
+        }
+        else if (UserInfo.currentGameMode == DeltaCore.GameMode.Training)
+        {
+            SceneManager.LoadScene("12_TrainingLevelSelectScreen");
+        }
+        else
+        {
+            UserInfo.currentGameMode = DeltaCore.GameMode.NoGameMode; 
+            SceneManager.LoadScene("02_WelcomeScreen-GameMode");
+        }
     }
 
     public static void LogAction(string action, string tag)
@@ -121,15 +137,28 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
         UserInfo.lastAction = UserInfo.UserAction.Save;
     }
 
+    public void updateDescision(int playerDescision)
+    {
+        descision = (DeltaCore.AnalysisDecision)playerDescision;
+    }
     public void SubmitAnalysis()
     {
-        instance.SaveMarkers();
-        localLog("Saving to Database");
-        Database.SaveLevelData(currentLevel);
-        UserInfo.lastAction = UserInfo.UserAction.Submit;
-        currentLevel.completed = true;
-        QuitAnalysis();
+        if (descision == DeltaCore.AnalysisDecision.NotSet)
+        {
+            instance.userMessageText.text = "Need to set Descion";
+            localLog("Desicion Not Set");
+        }
+        else
+        {
+            instance.SaveMarkers();
+            localLog("Saving to Database");
+            Database.SaveLevelData(currentLevel);
+            UserInfo.lastAction = UserInfo.UserAction.Submit;
+            currentLevel.completed = true;
+            QuitAnalysis();
+        }
     }
+
     public void ResetAll()
     {
         currentLevel.completed = false;
@@ -145,7 +174,6 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
 
         // Update Score 
         // currentLevel.updateLevelData();
-        trainingGM.updatePlayerData(currentLevel.markers);
         UserInfo.lastAction = UserInfo.UserAction.ResetAll;
     }
 
@@ -164,8 +192,8 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
         Load();
 
         // Update Score 
-//         currentLevel.updateLevelData();
-        trainingGM.updatePlayerData(currentLevel.markers);
+        // currentLevel.updateLevelData();
+
         UserInfo.lastAction = UserInfo.UserAction.ResettoLastSaved;
     }
 
@@ -189,11 +217,6 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
         }
     }
 
-    public void updateScoreData()
-    {
-        trainingGM.updatePlayerData(currentLevel.markers);
-    }
-
     public static void updateAction(DeltaCore.UserLevelAction action, GameObject affectedObject)
     {
         if (!currentLevel.completed)
@@ -203,7 +226,6 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
             instance.SaveMarkers();
             if (action == DeltaCore.UserLevelAction.RemoveMarker) { fixfirstDeleteBug(affectedObject); }
             // currentLevel.updateLevelData();
-            instance.updateScoreData();
         }
     }
 

@@ -2,7 +2,7 @@
 using System.Data;
 namespace DeltaCoreBE
 {
-
+    
     public class Sample
     {
         private int id = -1;
@@ -56,4 +56,5 @@ namespace DeltaCoreBE
             // Insert into Expert Database 
         }
     }
+    
 }

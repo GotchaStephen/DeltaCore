@@ -11,7 +11,7 @@ namespace DeltaCoreBE
 
     public class FingerPrintUserToBaseAnalysis
     {
-        private static bool debugOn = true;
+        private static bool debugOn = false;
         private static void localLog(string msg) { localLog("FPU2BA", msg); }
         private static void localLog(string topic, string msg)
         {
@@ -200,10 +200,9 @@ namespace DeltaCoreBE
         }
     }
 
-
     public class FingerPrintPlayerToSolutionAnalysis : FingerPrintUserToBaseAnalysis
     {
-        private bool debugOn = true;
+        private bool debugOn = false;
         private void localLog(string msg) { localLog("FingerPrintPlayerToSolutionAnalysis", msg); }
         private void localLog(string topic, string msg)
         {
@@ -248,26 +247,7 @@ namespace DeltaCoreBE
         public float CostOfInserts { get { return costOfInserts; } }
 
         private float getHighestCost() { return insertAllCost + deleteAllCost; }
-        private float getOptimumPathCost() { return costOfInserts + costOfSubstitutes + costOfDeletes; }
-
-
-        private int pastNumberOfSubstitutes;
-        public int PastNumberOfSubstitutes { get { return pastNumberOfSubstitutes; } }
-
-        private int pastNumberOfDeletes;
-        public int PastNumberOfDeletes { get { return pastNumberOfDeletes; } }
-
-        private int pastNumberOfInserts;
-        public int PastNumberOfInserts { get { return pastNumberOfInserts; } }
-
-        private float pastCostOfSubstitutes;
-        public float PastCostOfSubstitutes { get { return pastCostOfSubstitutes; } }
-
-        private float pastCostOfDeletes;
-        public float PastCostOfDeletes { get { return pastCostOfDeletes; } }
-
-        private float pastCostOfInserts;
-        public float PastCostOfInserts { get { return pastCostOfInserts; } }
+        public float getOptimumPathCost() { return costOfInserts + costOfSubstitutes + costOfDeletes; }
 
         protected override void resetUserData()
         {
@@ -309,8 +289,8 @@ namespace DeltaCoreBE
                 }
             }
 
-            localLog(String.Format("Cost breakdown [I:{0}][S:{1}][D:{2}]", costOfInserts, costOfSubstitutes, costOfDeletes));
-            localLog(String.Format("Point breakdown  [I:{0}][S:{1}][D:{2}]", numberOfInserts, numberOfSubstitutes, numberOfDeletes));
+            // localLog(String.Format("Cost breakdown [I:{0}][S:{1}][D:{2}]", costOfInserts, costOfSubstitutes, costOfDeletes));
+            // localLog(String.Format("Point breakdown  [I:{0}][S:{1}][D:{2}]", numberOfInserts, numberOfSubstitutes, numberOfDeletes));
         }
         public float getScore()
         {
@@ -319,14 +299,6 @@ namespace DeltaCoreBE
 
         public void reloadPlayerData(List<MarkerData> playerData)
         {
-            pastNumberOfSubstitutes = NumberOfSubstitutes ;
-            pastNumberOfDeletes = NumberOfDeletes ;
-            pastNumberOfInserts = NumberOfInserts ;
-
-            pastCostOfInserts = CostOfInserts ;
-            pastCostOfSubstitutes = CostOfSubstitutes;
-            pastCostOfDeletes = CostOfDeletes;
-
             resetUserData();
             reloadUserData(playerData);
             calculatePathCosts();

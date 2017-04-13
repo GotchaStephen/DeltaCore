@@ -15,7 +15,7 @@ namespace DeltaCoreBE
         {
             if (debugOn)
             {
-                string logEntry = string.Format("{0:F}: [{1}]{2}", System.DateTime.Now, topic, msg);
+                string logEntry = string.Format("{0:F}:[{1}] {2}", System.DateTime.Now, topic, msg);
                 Debug.Log(logEntry);
             }
         }
@@ -97,7 +97,7 @@ namespace DeltaCoreBE
         }
         public static bool removeAppliedFeatureToSample(int id)
         {
-            gf.gLog("Removing " + id.ToString());
+            localLog("Removing " + id.ToString());
             gotchaDB.removeAppliedFeatureForPlayerSampleById(id);
             return true;
         }

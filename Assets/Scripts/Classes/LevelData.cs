@@ -19,57 +19,21 @@ public class LevelData
     }
 
     public FingerprintLevel level;
-    public ScoreData scoreData; // Need to remove and replace with class
+     // public ScoreData scoreData; // Need to remove and replace with class
     public ArrayList markers;
-    public bool loadedSolution;
-
-    // New Code 
     public List<FingerPrintAnalysisPoint> solutionPoints;
 
-
-
-    private enum LevelProgress { Stage1, Stage2, Stage3, Completed, Perfected }
-    private const int stage2Value = 350;
-    private const int stage3Value = 550;
-    // private const int completedValue = 650;
-    private const int completedValue = 551;
-    private const int perfectedValue = 750;
-
-    
     public string actionsLog;
     public string userNotes;
-
     public bool completed;
     public bool ready;
-    public bool canSubmit;
-    public int currentScore;
+    
     public DeltaCore.AnalysisDecision decision;
-
-    // Analytical Testing 
-    private DeltaCore.UserLevelAction lastLevelAction;
+    private DeltaCore.UserLevelAction lastLevelAction ;
     public DeltaCore.UserLevelAction LastLevelAction
     {
         get { return lastLevelAction; }
         set { lastLevelAction = value; }
-    }
-
-    private LevelProgress progress;
-    //    public LevelProgress Progress
-    //    {
-    //        get { return progress; }
-    //    }
-    public void setLevelProgress()
-    {
-        if (currentScore > completedValue)
-        {
-            canSubmit = true;
-            if (currentScore > perfectedValue) { progress = LevelProgress.Perfected; }
-            else { progress = LevelProgress.Completed; }
-        }
-        else if (currentScore > stage3Value) { progress = LevelProgress.Stage3; }
-        else if (currentScore > stage2Value) { progress = LevelProgress.Stage2; }
-        else { progress = LevelProgress.Stage1; }
-        localLog("Level", string.Format("[Score:{0}][Progress:{1}]", currentScore, progress.ToString()));
     }
 
     public LevelData(FingerprintLevel level)
@@ -78,13 +42,8 @@ public class LevelData
         markers = new ArrayList();
         actionsLog = "";
         userNotes = "";
-        scoreData = new ScoreData();
-        loadedSolution = false;
-        canSubmit = false;
-        progress = LevelProgress.Stage1;
-
-        // New Code
-        solutionPoints = new List<FingerPrintAnalysisPoint>(); 
+        solutionPoints = new List<FingerPrintAnalysisPoint>();
+        LastLevelAction = DeltaCore.UserLevelAction.NoAction;
     }
 
     public void LogAction(string s)
@@ -101,14 +60,9 @@ public class LevelData
 
     public void UpdateUserNotes(string newNotes) { userNotes = newNotes; }
 
-    public void updateLevelData()
-    {
-        scoreData.processAction(markers);
-        currentScore = (int)scoreData.currentScore;
-        setLevelProgress();
-    }
-
     public void resetMarkers() { markers.Clear(); }
+    public void clearsolutionPoints() { solutionPoints.Clear(); }
+
     public override string ToString()
     {
         return String.Format("CurrentLevel[{0}]", level);

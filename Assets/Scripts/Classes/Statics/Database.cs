@@ -251,15 +251,15 @@ public static class Database
         {
             List<AppliedFeature> appliedFeatureList = PlayerFunctions.getSolutionFeaturesForSample(level.sampleId);
             localLog(string.Format("{0} features found on Ready sample[{1}:{2}]", appliedFeatureList.Count, level.sampleId, level.id));
-            
-            loadedLevelData.scoreData.clearsolutionMarkers();
+
+            loadedLevelData.clearsolutionPoints(); 
             foreach (AppliedFeature af in appliedFeatureList)
             {
                 float lX = af.LocationX;
                 float lY = af.LocationY;
                 bool hasOrientation = false;
                 if (af.Direction != 0) { hasOrientation = true; }
-                loadedLevelData.scoreData.solutionMarkers.Add(new MarkerData(lX, lY, (DeltaCore.MarkerType)af.FeatureID, (DeltaCore.MarkerConfidence)af.Confidence, hasOrientation, af.Direction));
+                // loadedLevelData.scoreData.solutionMarkers.Add(new MarkerData(lX, lY, (DeltaCore.MarkerType)af.FeatureID, (DeltaCore.MarkerConfidence)af.Confidence, hasOrientation, af.Direction));
                 loadedLevelData.solutionPoints.Add(new FingerPrintAnalysisPoint(af));
             }
         }
