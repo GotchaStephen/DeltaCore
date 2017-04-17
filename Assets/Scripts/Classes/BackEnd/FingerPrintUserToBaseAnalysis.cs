@@ -92,21 +92,7 @@ namespace DeltaCoreBE
         }
 
 
-        private void costMatrixtoCSV(string suffix = "")
-        {
-            string dirName = "I:/hypercube/Dropbox/Projects/BlackShepherdStudios/IT/ScoreTesting";
-            string fileName = dirName + "/" + string.Format("{0:HH_m_ss}_P2E_{1}.csv", DateTime.Now, suffix);
-            using (StreamWriter file = new StreamWriter(fileName))
-            {
-                for (int i = 0; i < totalPointCount; i++)
-                {
-                    for (int j = 0; j < totalPointCount; j++) { file.Write(costMatrix[i, j] + ","); }
-                    file.Write(Environment.NewLine);
-                }
-            }
-        }
-
-        protected void generateAnalysisInfo()
+		protected void generateAnalysisInfo()
         {
             totalPointCount = basePointCount + userPointCount;
             costMatrix = new float[totalPointCount, totalPointCount];

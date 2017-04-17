@@ -155,20 +155,20 @@ namespace DeltaCoreBE
 					costMatrix[i, j] = valueHolder;
 				}
 			}
-			if (writetoCSV)
-			{
-				localLog("Writing to CSV");
-				string dirName = "I:/hypercube/Dropbox/Projects/BlackShepherdStudios/IT/ScoreTesting";
-				string fileName = dirName + "/" + string.Format("{0:HH_m_ss}_P2E.csv", DateTime.Now);
-				using (StreamWriter file = new StreamWriter(fileName))
-				{
-					for (int i = 0; i < costMatrixSize; i++)
-					{
-						for (int j = 0; j < costMatrixSize; j++) { file.Write(costMatrix[i, j] + ","); }
-						file.Write(Environment.NewLine);
-					}
-				}
-			}
+			//if (writetoCSV)
+			//{
+			//	localLog("Writing to CSV");
+			//	string dirName = "I:/hypercube/Dropbox/Projects/BlackShepherdStudios/IT/ScoreTesting";
+			//	string fileName = dirName + "/" + string.Format("{0:HH_m_ss}_P2E.csv", DateTime.Now);
+			//	using (StreamWriter file = new StreamWriter(fileName))
+			//	{
+			//		for (int i = 0; i < costMatrixSize; i++)
+			//		{
+			//			for (int j = 0; j < costMatrixSize; j++) { file.Write(costMatrix[i, j] + ","); }
+			//			file.Write(Environment.NewLine);
+			//		}
+			//	}
+			//}
 		}
 
 		public static void getOptimumPathIndex(float[,] costMatric, ref int[] optimumPathIndex)
