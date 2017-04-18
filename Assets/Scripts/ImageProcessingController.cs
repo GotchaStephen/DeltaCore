@@ -43,10 +43,24 @@ public class ImageProcessingController : MonoBehaviour {
     }
 
     public GameObject loadingDisplayer;
-    public IEnumerator ProcessAsync() {
+
+    public IEnumerator ProcessAsync()
+	{
         loadingDisplayer.SetActive(true);
+		/*
+		Debug.Log(	"spriteRenderer.sprite.name: " + spriteRenderer.sprite);
+		Debug.Log(	"sp.texture: " + sp.texture.name + 
+					"brightness: " + brightness + 
+					"contrast: " + contrast + 
+					"grayscale: " + grayscale + 
+					"invert: " + invert + 
+					"gamma: " + gamma);
+		*/
+
+		// Process sprite with new values
         yield return DeltaCorePrototypeImageProcessingLib.ProcessAsync(sp.texture, brightness, contrast, grayscale, invert, gamma);
-        spriteRenderer.sprite = DeltaCorePrototypeImageProcessingLib.lastAsyncProcessedSprite;
+        // Update sprite with new values
+		spriteRenderer.sprite = DeltaCorePrototypeImageProcessingLib.lastAsyncProcessedSprite;
         loadingDisplayer.SetActive(false);
     }
 
@@ -91,8 +105,9 @@ public class ImageProcessingController : MonoBehaviour {
         AnalyseScreenScript.LogAction("Fingerprint gamma: " + gamma, "imageProcessing");
     }
 
-    public void setSprite(Sprite newSp) {
-        sp = newSp;
+	public void setSprite(Sprite newSp) {
+		spriteRenderer.sprite = newSp;
+		sp = spriteRenderer.sprite;
         //uiImage.SetNativeSize();
         Process();
     }
