@@ -19,15 +19,15 @@ public class TernaryPlot : MonoBehaviour {
 
 	public struct Weightings
 	{
-		public float xVal;
-		public float yVal;
-		public float zVal;
+		public float x;
+		public float y;
+		public float z;
 
-		public Weightings(float x, float y, float z)
+		public Weightings(float xVal, float yVal, float zVal)
 		{
-			xVal = x;
-			yVal = y;
-			zVal = z;
+			x = xVal;
+			y = yVal;
+			z = zVal;
 		}
 	}
 
@@ -60,9 +60,9 @@ public class TernaryPlot : MonoBehaviour {
 		while(counter < points)
 		{
 			//Then calculate point with these values
-			CalculatePoint(	weightingsList[counter].xVal, 
-							weightingsList[counter].yVal,
-							weightingsList[counter].zVal);
+			CalculatePoint(	weightingsList[counter].x, 
+							weightingsList[counter].y,
+							weightingsList[counter].z);
 
 			//Finally, draw
 			DrawPoint();
@@ -75,6 +75,9 @@ public class TernaryPlot : MonoBehaviour {
 
 	public void GetValues ()
 	{
+		//Reset the list
+		weightingsList.Clear();
+
 		// Query server by providing date for LOTD
 
 		// Receive a, b, c
