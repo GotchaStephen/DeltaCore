@@ -6,7 +6,7 @@ using System;
 public class GraphData : MonoBehaviour {
 
 	//All the values to be accessed for the graph being shown
-	public List<Entry> database = new List<Entry>();
+	public static List<Entry> database = new List<Entry>();
 	public static int numEntries = 0;
 
 	public struct Entry
