@@ -2,41 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GeneratePoints : MonoBehaviour {
-
-	public int points = 100;
-	public int counter = 0;
+public class OtherGraph : MonoBehaviour {
 
 	public GameObject pointPrefab; 
 
 	//confines of graph object
 	public GameObject graph;
 
-
-
 	Mesh graphMesh;
 
 	// Use this for initialization
 	void Start ()
 	{
-		RequestData();
 		SetGraphConfines();
-		CreatePointList();
+		CreatePoints();
 	}
-	
-	// Update is called once per frame
-	void Update () {
 		
-	}
-
-	public void RequestData()
-	{
-		//Request data from server
-
-		//Add points to list
-
-	}
-
 	public void SetGraphConfines()
 	{
 		//Set dimensions of graph relative to values of points received
@@ -45,15 +26,22 @@ public class GeneratePoints : MonoBehaviour {
 		graphMesh = graph.GetComponent<MeshFilter>().mesh;
 	}
 
-	public void CreatePointList()
+	public void CreatePoints()
 	{
 		//Reset point lists
-		ResetLists();
+		ClearGraph();
+
+		int counter = 0;
+		int points = GraphData.numEntries;
 
 		//While there are still points to add
 		while (counter < points)
 		{
-			InstantiatePoint(Random.Range(0f,100f), Random.Range(0f,100f), Random.Range(0f,100f));
+			//If conditions are met
+			if (true)
+			{
+				InstantiatePoint(GraphData.database[counter].insertCost, GraphData.database[counter].substituteCost, GraphData.database[counter].deleteCost);
+			}
 			counter++;
 		}
 	}
@@ -73,16 +61,13 @@ public class GeneratePoints : MonoBehaviour {
 		//print(graphMesh.bounds.size.x + "," + graphMesh.bounds.size.y + "," +graphMesh.bounds.size.z);
 
 		//Set position within parent confines
-		newPoint.transform.localPosition = new Vector3(	graphMesh.bounds.size.x / x,
-													graphMesh.bounds.size.y / y,
-													graphMesh.bounds.size.z / z);
+		newPoint.transform.localPosition = new Vector3(	graphMesh.bounds.size.x / x, graphMesh.bounds.size.y / y, graphMesh.bounds.size.z / z);
 
 		//Add this point GameObject to list
 	}
 
-	public void ResetLists()
+	public void ClearGraph()
 	{
-		counter = 0;
 
 		//Reset point list
 		//Reset gameobject list
