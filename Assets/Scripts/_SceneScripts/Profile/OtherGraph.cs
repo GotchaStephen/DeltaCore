@@ -48,6 +48,7 @@ public class OtherGraph : MonoBehaviour {
 
 	public void InstantiatePoint(float x, float y, float z)
 	{
+
 		//Instantiate
 		GameObject newPoint = Instantiate(pointPrefab);
 
@@ -61,7 +62,9 @@ public class OtherGraph : MonoBehaviour {
 		//print(graphMesh.bounds.size.x + "," + graphMesh.bounds.size.y + "," +graphMesh.bounds.size.z);
 
 		//Set position within parent confines
-		newPoint.transform.localPosition = new Vector3(	graphMesh.bounds.size.x / x, graphMesh.bounds.size.y / y, graphMesh.bounds.size.z / z);
+		//newPoint.transform.localPosition = new Vector3(	x / graphMesh.bounds.size.x, y / graphMesh.bounds.size.y, z / graphMesh.bounds.size.z);
+
+		newPoint.transform.localPosition = new Vector3(	x / GraphData.maxInsertCost, y / GraphData.maxSubstituteCost, z / GraphData.maxDeleteCost);
 
 		//Add this point GameObject to list
 	}

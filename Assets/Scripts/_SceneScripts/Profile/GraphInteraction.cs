@@ -17,7 +17,7 @@ using UnityEngine.EventSystems;
 
 public class GraphInteraction : MonoBehaviour {
 
-	float zoom = 0.01f;
+	float zoom = 0.02f;
 
 	float prePosX0;
 	float prePosY0;

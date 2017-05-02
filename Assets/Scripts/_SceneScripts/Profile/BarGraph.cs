@@ -36,23 +36,12 @@ public class BarGraph: MonoBehaviour {
 
 	public void DisplayGraph()
 	{
-		/*
-		int counter = 0;
-		// Get number of values in list
-		//int points = someList.Count;
-	
-		GetValues();
+		// Using the date setting, query the database and display the results
 
-		while(counter < points)
-		{
-			//Then draw these points
-
-			//Finally, draw
-			//DrawColumns(someList[counter]);
-
-			counter ++;
-		}
-		*/
+		//Using set data for moment
+		DrawColumns(GraphData.database[0], 0);
+		DrawColumns(GraphData.database[1], 1);
+		DrawColumns(GraphData.database[2], 2);
 	}
 
 	public void DrawColumns(GraphData.Entry entry, int graphic)
@@ -60,21 +49,24 @@ public class BarGraph: MonoBehaviour {
 		//Animations can be applied to these through script
 		if (graphic == 0)
 		{
-			x1Graphic.fillAmount = entry.insertCost;
-			y1Graphic.fillAmount = entry.substituteCost;
-			z1Graphic.fillAmount = entry.deleteCost;
+			print ("drawing graph 1");
+			x1Graphic.fillAmount = entry.insertCost / GraphData.maxInsertCost;
+			y1Graphic.fillAmount = entry.substituteCost / GraphData.maxSubstituteCost;
+			z1Graphic.fillAmount = entry.deleteCost / GraphData.maxDeleteCost;
 		}
 		else if (graphic == 1)
 		{
-			x2Graphic.fillAmount = entry.insertCost;
-			y2Graphic.fillAmount = entry.substituteCost;
-			z2Graphic.fillAmount = entry.deleteCost;
+			print ("drawing graph 2");
+			x2Graphic.fillAmount = entry.insertCost / GraphData.maxInsertCost;
+			y2Graphic.fillAmount = entry.substituteCost / GraphData.maxSubstituteCost;
+			z2Graphic.fillAmount = entry.deleteCost / GraphData.maxDeleteCost;
 		}
 		else if (graphic == 2)
 		{
-			x3Graphic.fillAmount = entry.insertCost;
-			y3Graphic.fillAmount = entry.substituteCost;
-			z3Graphic.fillAmount = entry.deleteCost;
+			print ("drawing graph 3");
+			x3Graphic.fillAmount = entry.insertCost / GraphData.maxInsertCost;
+			y3Graphic.fillAmount = entry.substituteCost / GraphData.maxSubstituteCost;
+			z3Graphic.fillAmount = entry.deleteCost / GraphData.maxDeleteCost;
 		}
 	}
 

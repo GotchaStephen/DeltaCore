@@ -9,6 +9,10 @@ public class GraphData : MonoBehaviour {
 	public static List<Entry> database = new List<Entry>();
 	public static int numEntries = 0;
 
+	public static float maxInsertCost = 1.6f;
+	public static float maxSubstituteCost = 0.022043f;
+	public static float maxDeleteCost = 1.6f;
+
 	public struct Entry
 	{
 
@@ -34,6 +38,11 @@ public class GraphData : MonoBehaviour {
 			substituteCost = y;
 			deleteCost = z;
 		}
+	}
+
+	void Start()
+	{
+		RequestData();
 	}
 
 	// Request this upon graph tab being clicked
@@ -66,5 +75,7 @@ public class GraphData : MonoBehaviour {
 		database.Add(new Entry(15, 18, 0, DateTime.Today, 0.4f, 0.017043f, 1.2f));
 		database.Add(new Entry(17, 18, 2, DateTime.Today, 1.6f, 0.0356216f, 0.8f));
 		database.Add(new Entry(16, 18, 1, DateTime.Today, 0f, 0.0070743f, 0.4f));
+
+		print("database added");
 	}
 }
