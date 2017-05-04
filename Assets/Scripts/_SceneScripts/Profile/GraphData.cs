@@ -10,7 +10,7 @@ public class GraphData : MonoBehaviour {
 	public static int numEntries = 0;
 
 	public static float maxInsertCost = 1.6f;
-	public static float maxSubstituteCost = 0.022043f;
+	public static float maxSubstituteCost =  0.0406216f;
 	public static float maxDeleteCost = 1.6f;
 
 	public struct Entry
@@ -18,6 +18,7 @@ public class GraphData : MonoBehaviour {
 
 		//what else to include?
 		public int userID;
+		public string state;
 		public int sampleID;
 		public int verdict;
 		public DateTime addedOn;
@@ -28,9 +29,10 @@ public class GraphData : MonoBehaviour {
 		public float substituteCost;
 		public float deleteCost;
 
-		public Entry(int uid, int sid, int ver, DateTime date, float x, float y, float z)
+		public Entry(int uid, string s, int sid, int ver, DateTime date, float x, float y, float z)
 		{
 			userID = uid;
+			state = s;
 			sampleID = sid;
 			verdict = ver;
 			addedOn = date;
@@ -66,15 +68,15 @@ public class GraphData : MonoBehaviour {
 
 	public void TestData()
 	{
-		database.Add(new Entry(15, 16, 0, DateTime.Today, 0f, 0.022043f, 0f));
-		database.Add(new Entry(17, 16, 2, DateTime.Today, 0.8f, 0.0406216f, 1.6f));
-		database.Add(new Entry(16, 16, 1, DateTime.Today, 1.6f, 0.0120743f, 0f));
-		database.Add(new Entry(15, 17, 0, DateTime.Today, 0f, 0.019543f, 0.8f));
-		database.Add(new Entry(17, 17, 2, DateTime.Today, 0.8f, 0.0381216f, 1.2f));
-		database.Add(new Entry(16, 17, 1, DateTime.Today, 0.4f, 0.0095743f, 0f));
-		database.Add(new Entry(15, 18, 0, DateTime.Today, 0.4f, 0.017043f, 1.2f));
-		database.Add(new Entry(17, 18, 2, DateTime.Today, 1.6f, 0.0356216f, 0.8f));
-		database.Add(new Entry(16, 18, 1, DateTime.Today, 0f, 0.0070743f, 0.4f));
+		database.Add(new Entry(15, "NSW", 16, 0, DateTime.Today, 0f, 0.022043f, 0f));
+		database.Add(new Entry(17, "QLD", 16, 2, DateTime.Today, 0.8f, 0.0406216f, 1.6f));
+		database.Add(new Entry(16, "VIC", 16, 1, DateTime.Today, 1.6f, 0.0120743f, 0f));
+		database.Add(new Entry(15, "NSW", 17, 0, DateTime.Today, 0f, 0.019543f, 0.8f));
+		database.Add(new Entry(17, "QLD", 17, 2, DateTime.Today, 0.8f, 0.0381216f, 1.2f));
+		database.Add(new Entry(16, "VIC", 17, 1, DateTime.Today, 0.4f, 0.0095743f, 0f));
+		database.Add(new Entry(15, "NSW", 18, 0, DateTime.Today, 0.4f, 0.017043f, 1.2f));
+		database.Add(new Entry(17, "QLD", 18, 2, DateTime.Today, 1.6f, 0.0356216f, 0.8f));
+		database.Add(new Entry(16, "VIC", 18, 1, DateTime.Today, 0f, 0.0070743f, 0.4f));
 
 		print("database added");
 	}

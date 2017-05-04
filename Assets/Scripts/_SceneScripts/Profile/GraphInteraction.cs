@@ -14,6 +14,7 @@ select new point = singular left click
 
 */
 using UnityEngine.EventSystems;
+using System;
 
 public class GraphInteraction : MonoBehaviour {
 
@@ -33,10 +34,11 @@ public class GraphInteraction : MonoBehaviour {
 
 	public GameObject cameraArmRotation;
 	public GameObject cameraArmTranslation;
-	
+
 	// Update is called once per frame
 	void Update ()
 	{
+
 		//Using camera for translation / rotations
 		// On left click
 		if (Input.GetMouseButtonDown(0))
@@ -105,8 +107,6 @@ public class GraphInteraction : MonoBehaviour {
 		}
 
 	}
-
-
 
 
 }

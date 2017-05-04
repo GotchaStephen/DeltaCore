@@ -39,35 +39,44 @@ public class BarGraph: MonoBehaviour {
 		// Using the date setting, query the database and display the results
 
 		//Using set data for moment
-		DrawColumns(GraphData.database[0], 0);
-		DrawColumns(GraphData.database[1], 1);
-		DrawColumns(GraphData.database[2], 2);
+		StartCoroutine(DrawColumns(GraphData.database[0], GraphData.database[1], GraphData.database[2]));
+
 	}
 
-	public void DrawColumns(GraphData.Entry entry, int graphic)
+	IEnumerator DrawColumns(GraphData.Entry entry1, GraphData.Entry entry2, GraphData.Entry entry3)
 	{
-		//Animations can be applied to these through script
-		if (graphic == 0)
+		float fillRate = 0.1f;
+		float x1fill = x1Graphic.fillAmount;
+		float y1fill = y1Graphic.fillAmount;
+		float z1fill = z1Graphic.fillAmount;
+		float x2fill = x2Graphic.fillAmount;
+		float y2fill = y2Graphic.fillAmount;
+		float z2fill = z2Graphic.fillAmount;
+		float x3fill = x3Graphic.fillAmount;
+		float y3fill = y3Graphic.fillAmount;
+		float z3fill = z3Graphic.fillAmount;
+
+		// Animate this change
+		for(float i = 0f; i < 1 ; i += fillRate)
 		{
-			print ("drawing graph 1");
-			x1Graphic.fillAmount = entry.insertCost / GraphData.maxInsertCost;
-			y1Graphic.fillAmount = entry.substituteCost / GraphData.maxSubstituteCost;
-			z1Graphic.fillAmount = entry.deleteCost / GraphData.maxDeleteCost;
+			//Day prior
+			x1Graphic.fillAmount += ((entry1.insertCost / GraphData.maxInsertCost) - x1fill) * fillRate;
+			y1Graphic.fillAmount += ((entry1.substituteCost / GraphData.maxSubstituteCost) - y1fill) * fillRate;
+			z1Graphic.fillAmount += ((entry1.deleteCost / GraphData.maxDeleteCost) - z1fill) * fillRate;
+
+			//Day current
+			x2Graphic.fillAmount += ((entry2.insertCost / GraphData.maxInsertCost) - x2fill) * fillRate;
+			y2Graphic.fillAmount += ((entry2.substituteCost / GraphData.maxSubstituteCost) - y2fill) * fillRate;
+			z2Graphic.fillAmount += ((entry2.deleteCost / GraphData.maxDeleteCost) - z2fill) * fillRate;
+
+			//Day after
+			x3Graphic.fillAmount += ((entry3.insertCost / GraphData.maxInsertCost) - x3fill) * fillRate;
+			y3Graphic.fillAmount += ((entry3.substituteCost / GraphData.maxSubstituteCost) - y3fill) * fillRate;
+			z3Graphic.fillAmount += ((entry3.deleteCost / GraphData.maxDeleteCost) - z3fill) * fillRate;
+
+			yield return new WaitForSeconds(0.01f);
 		}
-		else if (graphic == 1)
-		{
-			print ("drawing graph 2");
-			x2Graphic.fillAmount = entry.insertCost / GraphData.maxInsertCost;
-			y2Graphic.fillAmount = entry.substituteCost / GraphData.maxSubstituteCost;
-			z2Graphic.fillAmount = entry.deleteCost / GraphData.maxDeleteCost;
-		}
-		else if (graphic == 2)
-		{
-			print ("drawing graph 3");
-			x3Graphic.fillAmount = entry.insertCost / GraphData.maxInsertCost;
-			y3Graphic.fillAmount = entry.substituteCost / GraphData.maxSubstituteCost;
-			z3Graphic.fillAmount = entry.deleteCost / GraphData.maxDeleteCost;
-		}
+		yield return null;
 	}
 
 	public void GetValues ()
@@ -148,7 +157,7 @@ public class BarGraph: MonoBehaviour {
 		counter = 0;
 
 		//Make the new entry with averaged values
-		weightingsToAdd.Add(new GraphData.Entry(0, 0, 0, DateTime.Today, (averageX / numEntries), 
+		weightingsToAdd.Add(new GraphData.Entry(0, "", 0, 0, DateTime.Today, (averageX / numEntries), 
 							(averageY / numEntries), 
 							(averageZ / numEntries)));
 	}

@@ -9,21 +9,30 @@ public class OtherGraph : MonoBehaviour {
 	//confines of graph object
 	public GameObject graph;
 
+	//Grid
+	public GameObject block;
+	public GameObject blockParent;
+
 	Mesh graphMesh;
+	float graphX;
+	float graphY;
+	float graphZ;
+
+	// State toggles
+	bool toggleNSW = true;
+	bool toggleVIC = true;
+	bool toggleQLD = true;
+	bool toggleACT = true;
+	bool toggleSA = true;
+	bool toggleWA = true;
+	bool toggleNT = true;
+
 
 	// Use this for initialization
 	void Start ()
 	{
-		SetGraphConfines();
+		StartCoroutine(CreateGrid());
 		CreatePoints();
-	}
-		
-	public void SetGraphConfines()
-	{
-		//Set dimensions of graph relative to values of points received
-
-		//Get the mesh of the graph
-		graphMesh = graph.GetComponent<MeshFilter>().mesh;
 	}
 
 	public void CreatePoints()
@@ -34,20 +43,33 @@ public class OtherGraph : MonoBehaviour {
 		int counter = 0;
 		int points = GraphData.numEntries;
 
+		//For scaling
+		graphX = graph.transform.localScale.x;
+		graphY = graph.transform.localScale.y;
+		graphZ = graph.transform.localScale.z;
+
 		//While there are still points to add
 		while (counter < points)
 		{
-			//If conditions are met
-			if (true)
+			if (((GraphData.database[counter].state == "NSW") && toggleNSW) ||
+				((GraphData.database[counter].state == "VIC") && toggleVIC) ||
+				((GraphData.database[counter].state == "QLD") && toggleQLD) ||
+				((GraphData.database[counter].state == "ACT") && toggleACT) ||
+				((GraphData.database[counter].state == "SA") && toggleSA) ||
+				((GraphData.database[counter].state == "WA") && toggleWA) ||
+				((GraphData.database[counter].state == "NT") && toggleNT))
 			{
-				InstantiatePoint(GraphData.database[counter].insertCost, GraphData.database[counter].substituteCost, GraphData.database[counter].deleteCost);
+				StartCoroutine(InstantiatePoint(	(GraphData.database[counter].insertCost / GraphData.maxInsertCost), 
+													(GraphData.database[counter].substituteCost / GraphData.maxSubstituteCost),
+													(GraphData.database[counter].deleteCost / GraphData.maxDeleteCost)));
 			}
 			counter++;
 		}
 	}
 
-	public void InstantiatePoint(float x, float y, float z)
+	IEnumerator InstantiatePoint(float x, float y, float z)
 	{
+		yield return new WaitForSeconds(1f);
 
 		//Instantiate
 		GameObject newPoint = Instantiate(pointPrefab);
@@ -59,21 +81,79 @@ public class OtherGraph : MonoBehaviour {
 		//Set parent
 		newPoint.transform.SetParent(graph.transform, false);
 
-		//print(graphMesh.bounds.size.x + "," + graphMesh.bounds.size.y + "," +graphMesh.bounds.size.z);
-
 		//Set position within parent confines
-		//newPoint.transform.localPosition = new Vector3(	x / graphMesh.bounds.size.x, y / graphMesh.bounds.size.y, z / graphMesh.bounds.size.z);
-
-		newPoint.transform.localPosition = new Vector3(	x / GraphData.maxInsertCost, y / GraphData.maxSubstituteCost, z / GraphData.maxDeleteCost);
+		newPoint.transform.localPosition = new Vector3(	x - (graphX/2), y - (graphY/2), z - (graphZ/2));
 
 		//Add this point GameObject to list
+
+		yield return null;
+	}
+
+	IEnumerator CreateGrid()
+	{
+		float blockScale = blockParent.transform.localScale.x * 0.5f;
+
+		for(float x = 0f; x <= 1; x = x + 0.1f)
+		{
+			for(float y = 0f; y <= 1; y = y + 0.1f)
+			{  
+				for(float z = 0f; z <= 1; z = z + 0.1f)
+				{                
+					GameObject gridBlock = Instantiate(block);
+					gridBlock.transform.localPosition = new Vector3(x - blockScale, y - blockScale, z - blockScale);
+					gridBlock.transform.SetParent(blockParent.transform, false);
+				}
+			}
+		}
+		yield return null;
 	}
 
 	public void ClearGraph()
 	{
 
-		//Reset point list
-		//Reset gameobject list
+		var children = new List<GameObject>();
+		foreach (Transform child in graph.transform)
+		{	
+			children.Add(child.gameObject);
+		}
+		children.ForEach(child => Destroy(child));
+		
 
+	}
+
+	public void NSWButton()
+	{
+		toggleNSW = !toggleNSW; 
+		CreatePoints();
+	}
+	public void VICButton()
+	{
+		toggleQLD = !toggleVIC;
+		CreatePoints();
+	}
+	public void QLDButton()
+	{
+		toggleQLD = !toggleQLD;
+		CreatePoints();
+	}
+	public void ACTButton()
+	{
+		toggleACT = !toggleACT;
+		CreatePoints();
+	}
+	public void SAButton()
+	{
+		toggleSA = !toggleSA;
+		CreatePoints();
+	}
+	public void WAButton()
+	{
+		toggleWA = !toggleWA;
+		CreatePoints();
+	}
+	public void NTButton()
+	{
+		toggleNT = !toggleNT;
+		CreatePoints();
 	}
 }
