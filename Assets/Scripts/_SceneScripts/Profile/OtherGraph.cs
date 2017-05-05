@@ -1,10 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class OtherGraph : MonoBehaviour {
 
+	public static List<GraphData.Entry> databasecopy = new List<GraphData.Entry>();
+
 	public GameObject pointPrefab; 
+	float maxTransparency = 0.8f;
+	float fadeRate = 0.05f;
 
 	//confines of graph object
 	public GameObject graph;
@@ -27,55 +32,71 @@ public class OtherGraph : MonoBehaviour {
 	bool toggleWA = true;
 	bool toggleNT = true;
 
-
 	// Use this for initialization
 	void Start ()
 	{
 		StartCoroutine(CreateGrid());
-		CreatePoints();
-	}
-
-	public void CreatePoints()
-	{
-		//Reset point lists
-		ClearGraph();
-
-		int counter = 0;
-		int points = GraphData.numEntries;
 
 		//For scaling
 		graphX = graph.transform.localScale.x;
 		graphY = graph.transform.localScale.y;
 		graphZ = graph.transform.localScale.z;
 
+		CreatePoints();
+	}
+
+	public void CreatePoints()
+	{
+		int counter = 0;
+
 		//While there are still points to add
-		while (counter < points)
+		while (counter < GraphData.numEntries)
 		{
-			if (((GraphData.database[counter].state == "NSW") && toggleNSW) ||
-				((GraphData.database[counter].state == "VIC") && toggleVIC) ||
-				((GraphData.database[counter].state == "QLD") && toggleQLD) ||
-				((GraphData.database[counter].state == "ACT") && toggleACT) ||
-				((GraphData.database[counter].state == "SA") && toggleSA) ||
-				((GraphData.database[counter].state == "WA") && toggleWA) ||
-				((GraphData.database[counter].state == "NT") && toggleNT))
-			{
-				StartCoroutine(InstantiatePoint(	(GraphData.database[counter].insertCost / GraphData.maxInsertCost), 
-													(GraphData.database[counter].substituteCost / GraphData.maxSubstituteCost),
-													(GraphData.database[counter].deleteCost / GraphData.maxDeleteCost)));
-			}
+			InstantiatePoint(GraphData.database[counter], counter);
 			counter++;
+		}
+
+		AdjustGraph();
+	}
+
+	public void AdjustGraph()
+	{
+		int counter = 0;
+
+		Transform[] allChildren = graph.GetComponentsInChildren<Transform>();
+		foreach (Transform child in allChildren)
+		{
+			int childName;
+			if (Int32.TryParse(child.gameObject.name, out childName))
+			{	
+				if (((GraphData.database[childName].state == "NSW") && toggleNSW) ||
+					((GraphData.database[childName].state == "VIC") && toggleVIC) ||
+					((GraphData.database[childName].state == "QLD") && toggleQLD) ||
+					((GraphData.database[childName].state == "ACT") && toggleACT) ||
+					((GraphData.database[childName].state == "SA") && toggleSA) ||
+					((GraphData.database[childName].state == "WA") && toggleWA) ||
+					((GraphData.database[childName].state == "NT") && toggleNT))
+				{
+					StartCoroutine(FadeIn(child.gameObject));
+				}
+				else
+				{
+					StartCoroutine(FadeOut(child.gameObject));
+				}
+			}
 		}
 	}
 
-	IEnumerator InstantiatePoint(float x, float y, float z)
+	public void InstantiatePoint(GraphData.Entry entry, int counter)
 	{
-		yield return new WaitForSeconds(1f);
+		float x = entry.insertCost / GraphData.maxInsertCost;
+		float y = entry.substituteCost / GraphData.maxSubstituteCost;
+		float z = entry.deleteCost / GraphData.maxDeleteCost;
 
 		//Instantiate
 		GameObject newPoint = Instantiate(pointPrefab);
 
-		//Point name will look like "point(x,y,z)"
-		string pointName = "point(" + x.ToString() + "," + y.ToString() + "," + z.ToString() + ")";
+		string pointName = counter.ToString();
 		newPoint.name = pointName;
 
 		//Set parent
@@ -84,9 +105,10 @@ public class OtherGraph : MonoBehaviour {
 		//Set position within parent confines
 		newPoint.transform.localPosition = new Vector3(	x - (graphX/2), y - (graphY/2), z - (graphZ/2));
 
-		//Add this point GameObject to list
-
-		yield return null;
+		//Initiate the line renderer
+		LineRenderer lr = newPoint.GetComponent<LineRenderer>();
+		lr.SetPosition(0, new Vector3(-graphX/2, -graphY/2, -graphZ/2));
+		lr.SetPosition(1, newPoint.transform.position);
 	}
 
 	IEnumerator CreateGrid()
@@ -108,52 +130,94 @@ public class OtherGraph : MonoBehaviour {
 		yield return null;
 	}
 
-	public void ClearGraph()
+	IEnumerator FadeIn(GameObject point)
 	{
+		float startingTransparency = point.GetComponent<Renderer>().material.color.a;
 
-		var children = new List<GameObject>();
-		foreach (Transform child in graph.transform)
-		{	
-			children.Add(child.gameObject);
+		point.GetComponent<Renderer>().enabled = true;
+
+		// Animate this change
+		for(float i = startingTransparency; i < maxTransparency ; i = i + fadeRate)
+		{
+			Color color = point.GetComponent<Renderer>().material.color;
+			color.a += maxTransparency * fadeRate;
+			point.GetComponent<Renderer>().material.color = color;
+
+			yield return new WaitForSeconds(fadeRate);
 		}
-		children.ForEach(child => Destroy(child));
-		
 
+		//Finally
+		Color colorF = point.GetComponent<Renderer>().material.color;
+		colorF.a = maxTransparency;
+		point.GetComponent<Renderer>().material.color = colorF;
+
+		//Initiate the line renderer
+		LineRenderer lr = point.GetComponent<LineRenderer>();
+		lr.enabled = true;
+	}
+
+	IEnumerator FadeOut(GameObject point)
+	{
+		float startingTransparency = point.GetComponent<Renderer>().material.color.a;
+
+		// Animate this change
+		for(float i = startingTransparency; i > 0f ; i = i - fadeRate)
+		{
+			Color color = point.GetComponent<Renderer>().material.color;
+			color.a -= maxTransparency * fadeRate;
+			point.GetComponent<Renderer>().material.color = color;
+
+			yield return new WaitForSeconds(fadeRate);
+		}
+
+		//Finally
+		Color colorF = point.GetComponent<Renderer>().material.color;
+		colorF.a = 0f;
+		point.GetComponent<Renderer>().material.color = colorF;
+
+		// Accounts for extra things like emission
+		point.GetComponent<Renderer>().enabled = false;
+
+		//Initiate the line renderer
+		LineRenderer lr = point.GetComponent<LineRenderer>();
+		lr.enabled = false;
+
+		yield return null;
 	}
 
 	public void NSWButton()
 	{
 		toggleNSW = !toggleNSW; 
-		CreatePoints();
+		AdjustGraph();
 	}
 	public void VICButton()
 	{
-		toggleQLD = !toggleVIC;
-		CreatePoints();
+		toggleVIC = !toggleVIC;
+		AdjustGraph();
 	}
 	public void QLDButton()
 	{
 		toggleQLD = !toggleQLD;
-		CreatePoints();
+		AdjustGraph();
 	}
 	public void ACTButton()
 	{
 		toggleACT = !toggleACT;
-		CreatePoints();
+		AdjustGraph();
 	}
 	public void SAButton()
 	{
 		toggleSA = !toggleSA;
-		CreatePoints();
+		AdjustGraph();
 	}
 	public void WAButton()
 	{
 		toggleWA = !toggleWA;
-		CreatePoints();
+		AdjustGraph();
 	}
 	public void NTButton()
 	{
 		toggleNT = !toggleNT;
-		CreatePoints();
+		AdjustGraph();
 	}
 }

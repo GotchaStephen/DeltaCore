@@ -35,6 +35,17 @@ public class GraphInteraction : MonoBehaviour {
 	public GameObject cameraArmRotation;
 	public GameObject cameraArmTranslation;
 
+	//Defaults for resetting
+	public Quaternion defaultRotation;
+	public Vector3 defaultTranslation;
+
+
+	void Start()
+	{
+		defaultRotation = cameraArmRotation.transform.localRotation;
+		defaultTranslation = cameraArmTranslation.transform.position;
+	}
+
 	// Update is called once per frame
 	void Update ()
 	{
@@ -108,5 +119,10 @@ public class GraphInteraction : MonoBehaviour {
 
 	}
 
+	public void ResetViewer()
+	{
+		cameraArmRotation.transform.localRotation = defaultRotation;
+		cameraArmTranslation.transform.position = defaultTranslation;
+	}
 
 }
