@@ -8,7 +8,7 @@ public class OtherGraph : MonoBehaviour {
 	public static List<GraphData.Entry> databasecopy = new List<GraphData.Entry>();
 
 	public GameObject pointPrefab; 
-	float maxTransparency = 0.8f;
+	float maxTransparency = 1f;
 	float fadeRate = 0.05f;
 
 	//confines of graph object

@@ -36,14 +36,19 @@ public class GraphInteraction : MonoBehaviour {
 	public GameObject cameraArmTranslation;
 
 	//Defaults for resetting
-	public Quaternion defaultRotation;
-	public Vector3 defaultTranslation;
+	public Vector3 defaultRotationI = new Vector3(0.0f, 0.0f, 0.0f);
+	public Vector3 defaultTranslationI = new Vector3(0.0f, 0.0f, -1.5f);
 
+	//Defaults for resetting
+	public Vector3 defaultRotationS = new Vector3(0.0f, 90f, 90f);
+	public Vector3 defaultTranslationS = new Vector3(0.0f, 0.0f, -1.5f);
+
+	//Defaults for resetting
+	public Vector3 defaultRotationD = new Vector3(270f, 90f, 180f);
+	public Vector3 defaultTranslationD = new Vector3(0.0f, 0.0f, -1.5f);
 
 	void Start()
 	{
-		defaultRotation = cameraArmRotation.transform.localRotation;
-		defaultTranslation = cameraArmTranslation.transform.position;
 	}
 
 	// Update is called once per frame
@@ -119,10 +124,22 @@ public class GraphInteraction : MonoBehaviour {
 
 	}
 
-	public void ResetViewer()
+	public void ResetViewerI()
 	{
-		cameraArmRotation.transform.localRotation = defaultRotation;
-		cameraArmTranslation.transform.position = defaultTranslation;
+		cameraArmRotation.transform.localRotation = Quaternion.Euler(defaultRotationI);
+		cameraArmTranslation.transform.localPosition = defaultTranslationI;
+	}
+
+	public void ResetViewerS()
+	{
+		cameraArmRotation.transform.localRotation = Quaternion.Euler(defaultRotationS);
+		cameraArmTranslation.transform.localPosition = defaultTranslationS;
+	}
+
+	public void ResetViewerD()
+	{
+		cameraArmRotation.transform.localRotation = Quaternion.Euler(defaultRotationD);
+		cameraArmTranslation.transform.localPosition = defaultTranslationD;
 	}
 
 }

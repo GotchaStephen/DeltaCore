@@ -14,7 +14,10 @@ public class TernaryPlotGraph : MonoBehaviour {
 	private float graphWidth;
 	private float graphHeight;
 
-	public GameObject pointPrefab;
+	public GameObject pointPrefab0;
+	public GameObject pointPrefab1;
+	public GameObject pointPrefab2;
+
 	private float maxTransparency = 0.8f;
 
 	public GameObject graphInfo;
@@ -54,7 +57,7 @@ public class TernaryPlotGraph : MonoBehaviour {
 								(GraphData.database[counter].deleteCost / GraphData.maxDeleteCost));
 
 				//Finally, draw
-				DrawPoint(counter);
+				DrawPoint(counter, GraphData.database[counter].verdict);
 			}
 
 			yield return new WaitForSeconds(0.2f);
@@ -87,25 +90,34 @@ public class TernaryPlotGraph : MonoBehaviour {
 		print(zX + "," + zY);
 	}
 
-	public void DrawPoint(int id)
+	public void DrawPoint(int id, int verdict)
 	{
-
-		//Instantiate
-		GameObject newPoint = Instantiate(pointPrefab);
-
-		//Point name will look like "point(x,y)"
-		//string pointName = "point(" + zX.ToString() + "," + zY.ToString() + ")";
 		string pointName = id.ToString();
-		newPoint.name = pointName;
 
-		//Set parent
-		newPoint.transform.SetParent(graph.transform, false);
-
-		//Set position within parent confines
-		newPoint.transform.localPosition = new Vector3(((zX * graphWidth) - (graphWidth/2)), ((zY * graphHeight) - (graphHeight/2)), 0f);
-
-		//Fade in
-		StartCoroutine(FadeIn(newPoint));
+		if (verdict == 0)
+		{
+			GameObject newPoint = Instantiate(pointPrefab0);
+			newPoint.name = pointName;
+			newPoint.transform.SetParent(graph.transform, false);
+			newPoint.transform.localPosition = new Vector3(((zX * graphWidth) - (graphWidth/2)), ((zY * graphHeight) - (graphHeight/2)), 0f);
+			StartCoroutine(FadeIn(newPoint));
+		}
+		else if (verdict == 1)
+		{
+			GameObject newPoint = Instantiate(pointPrefab1);
+			newPoint.name = pointName;
+			newPoint.transform.SetParent(graph.transform, false);
+			newPoint.transform.localPosition = new Vector3(((zX * graphWidth) - (graphWidth/2)), ((zY * graphHeight) - (graphHeight/2)), 0f);
+			StartCoroutine(FadeIn(newPoint));
+		}
+		else if (verdict == 2)
+		{
+			GameObject newPoint = Instantiate(pointPrefab2);
+			newPoint.name = pointName;
+			newPoint.transform.SetParent(graph.transform, false);
+			newPoint.transform.localPosition = new Vector3(((zX * graphWidth) - (graphWidth/2)), ((zY * graphHeight) - (graphHeight/2)), 0f);
+			StartCoroutine(FadeIn(newPoint));
+		}
 	}
 
 	IEnumerator FadeIn(GameObject point)
@@ -132,11 +144,23 @@ public class TernaryPlotGraph : MonoBehaviour {
 		int id = Int32.Parse(point.name);
 
 		string newDescription = 
-			"Sample ID : " + GraphData.database[id].sampleID + "\r\n" +
-			"Date Completed : " + GraphData.database[id].addedOn + "\r\n" +
-			"Insert Cost : " + GraphData.database[id].insertCost + "\r\n" +
-			"Substitute Cost : " + GraphData.database[id].substituteCost + "\r\n" +
-			"Delete Cost : " + GraphData.database[id].deleteCost;
+			"Sample ID : " + "\r\n" +
+			GraphData.database[id].sampleID + "\r\n" +
+			"\r\n" +
+			"Date Completed : " + "\r\n" +
+			GraphData.database[id].addedOn + "\r\n" +
+			"\r\n" +
+			"Verdict: " + "\r\n" +
+			GraphData.database[id].verdict + "\r\n" +
+			"\r\n" +
+			"Insert Cost : " + "\r\n" +
+			GraphData.database[id].insertCost + "\r\n" +
+			"\r\n" +
+			"Substitute Cost : " + "\r\n" +
+			GraphData.database[id].substituteCost + "\r\n" +
+			"\r\n" +
+			"Delete Cost : " + "\r\n" +
+			GraphData.database[id].deleteCost;
 
 		descriptionText.text = newDescription;
 
