@@ -6,6 +6,7 @@ using DeltaCoreBE;
 
 public class LevelData
 {
+	//public static LevelData instance;	
 
     private static bool debugOn = true;
     private static void localLog(string msg) { localLog("LevelData", msg); }

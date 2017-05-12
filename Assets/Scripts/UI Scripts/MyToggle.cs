@@ -56,11 +56,13 @@ public class MyToggle : MonoBehaviour, IPointerClickHandler {
 		
 	}
 
-    public void OnPointerClick(PointerEventData eventData) {
+    public void OnPointerClick(PointerEventData eventData)
+	{
         toggle();
     }
 
-    public void toggle() {
+    public void toggle()
+	{
         state = !state;
         if (state) {
             uiImage.sprite = toggleOn;

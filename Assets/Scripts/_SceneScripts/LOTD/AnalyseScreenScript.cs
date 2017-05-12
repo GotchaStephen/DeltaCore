@@ -217,6 +217,7 @@ public class AnalyseScreenScript : MonoBehaviour
         }
     }
 
+
     public static void updateAction(DeltaCore.UserLevelAction action, GameObject affectedObject)
     {
         if (!currentLevel.completed)
@@ -225,7 +226,8 @@ public class AnalyseScreenScript : MonoBehaviour
             currentLevel.LastLevelAction = action;
             instance.SaveMarkers();
             if (action == DeltaCore.UserLevelAction.RemoveMarker) { fixfirstDeleteBug(affectedObject); }
-            // currentLevel.updateLevelData();
+
+             //currentLevel.updateLevelData();
         }
     }
 

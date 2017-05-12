@@ -51,7 +51,12 @@ public class ClickyWheelMenu : MonoBehaviour, IPointerExitHandler {
 
     IEnumerator openMenu() {
         inTransition = true;
-        for(float f = 0; f < 0.2f;) {
+
+		//Play sound
+		AudioController.instance.Play(9, 1f, 1f);
+
+        for(float f = 0; f < 0.2f;)
+		{
             f += Time.deltaTime;
             float scale = Mathf.Lerp(0, 1, f / 0.2f);
             transform.localScale = new Vector3(scale, scale, scale);
@@ -60,8 +65,10 @@ public class ClickyWheelMenu : MonoBehaviour, IPointerExitHandler {
         inTransition = false;
     }
 
-    IEnumerator closeMenu() {
+    IEnumerator closeMenu()
+	{
         inTransition = true;
+
         for (float f = 0; f < 0.2f;) {
             f += Time.deltaTime;
             float scale = Mathf.Lerp(1, 0, f/0.2f);

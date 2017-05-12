@@ -21,11 +21,15 @@ public class Debug_SecondarySideMenuManager : MonoBehaviour {
 		
 	}
 
-    public void Set(int i) {
+    public void Set(int i)
+	{
         if(i<screens.Length && i >= 0) {
             Reset();
             screens[i].SetActive(true);
             currentScreen = i;
+
+			//Play sound
+			AudioController.instance.BigButtonClick();
         }
     }
 

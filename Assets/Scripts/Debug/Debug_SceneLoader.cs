@@ -13,7 +13,11 @@ public class Debug_SceneLoader : MonoBehaviour, IPointerClickHandler {
     public void OnPointerClick(PointerEventData eventData) {
 
         // NUN Guest Login
-		if (!sceneName.Equals ("NotSet")) {
+		if (!sceneName.Equals ("NotSet"))
+		{
+			// Play sound
+			AudioController.instance.BigButtonClick();
+			// Load scebe
 			SceneManager.LoadScene(sceneName);
 		}
 	   //     SceneManager.LoadScene(sceneIndex);

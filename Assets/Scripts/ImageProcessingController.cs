@@ -21,23 +21,29 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class ImageProcessingController : MonoBehaviour {
 
+	public static ImageProcessingController instance;	
+
     [HideInInspector]
     float brightness, contrast;
     [HideInInspector]
     bool grayscale, invert, gamma;
 
     Sprite sp;
+
+	Sprite importedSp;
+
     SpriteRenderer spriteRenderer;
 
     // Use this for initialization
-    void Start () {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+    void Start ()
+	{
+        spriteRenderer = this.GetComponent<SpriteRenderer>();
         sp = spriteRenderer.sprite;
         contrast = 1;
 	}
 
-    public void Process() {
-        //spriteRenderer.sprite = DeltaCorePrototypeImageProcessingLib.Process(sp.texture, brightness, contrast, grayscale, invert, gamma);
+    public void Process()
+	{
         StopCoroutine(ProcessAsync());
         StartCoroutine(ProcessAsync());
     }
@@ -61,7 +67,10 @@ public class ImageProcessingController : MonoBehaviour {
         yield return DeltaCorePrototypeImageProcessingLib.ProcessAsync(sp.texture, brightness, contrast, grayscale, invert, gamma);
         // Update sprite with new values
 		spriteRenderer.sprite = DeltaCorePrototypeImageProcessingLib.lastAsyncProcessedSprite;
+		//Play sound
+		AudioController.instance.SmallButtonClick();
         loadingDisplayer.SetActive(false);
+
     }
 
     private void logAction(string action, string tag = "")
@@ -75,6 +84,7 @@ public class ImageProcessingController : MonoBehaviour {
             AnalyseScreenScript.LogAction(action, tag);
         }
     }
+
     public void SetBrightness(float brightness) {
         this.brightness = brightness;
         Process();
@@ -105,11 +115,16 @@ public class ImageProcessingController : MonoBehaviour {
         AnalyseScreenScript.LogAction("Fingerprint gamma: " + gamma, "imageProcessing");
     }
 
-	public void setSprite(Sprite newSp) {
+	public void setSprite(Sprite newSp)
+	{
+		spriteRenderer = this.GetComponent<SpriteRenderer>();
+
 		spriteRenderer.sprite = newSp;
 		sp = spriteRenderer.sprite;
+
         //uiImage.SetNativeSize();
-        Process();
+        
+		Process();
     }
 
     public void Reset() {
