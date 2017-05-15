@@ -31,9 +31,13 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
     public GameObject fingerPrint;
     public GameObject featureMarkerPrefab;
     public InputField notesInputField;
+    public Button submitButton;
+    public Button resetButton;
+    public Button hintButton;
 
     public Text userMessageText;
-    
+
+     
     // Use this for initialization
     void Start()
     {
@@ -72,7 +76,7 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
         notesInputField.text = notesHolder;
 
         //DEBUG
-        FindObjectOfType<Debug_SecondarySideMenuManager>().Set(5);
+        //FindObjectOfType<Debug_SecondarySideMenuManager>().Set(5);
     }
 
     public void QuitAnalysis()
@@ -95,22 +99,22 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
     public void SaveMarkers()
     {
         currentLevel.resetMarkers();
-        
         foreach (FeatureMarker marker in fingerPrint.GetComponentsInChildren<FeatureMarker>())
         {
-            if (marker.placed) { currentLevel.markers.Add(new MarkerData(marker)); }
+            if ( marker.placed ) { currentLevel.markers.Add(new MarkerData(marker)); }
             // if (!marker.isInPlacingMode) { currentLevel.markers.Add(new MarkerData(marker)); }
             //   currentLevel.markers.Add(new MarkerData(marker)) ;
         }
         localLog("# currentLevel markers " + currentLevel.markers.Count.ToString());
     }
-    public void DeleteMarkers()
+    private void DeleteMarkersFromScreen()
     {
         foreach (FeatureMarker marker in fingerPrint.GetComponentsInChildren<FeatureMarker>())
         {
-            if (!marker.isInPlacingMode)
-                currentLevel.markers.Add(new MarkerData(marker));
-            GameObject.DestroyImmediate(marker.gameObject);
+            if (marker.placed)
+            {
+                GameObject.DestroyImmediate(marker.gameObject);
+            }
         }
     }
 
@@ -133,14 +137,15 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
         Database.SaveLevelData(currentLevel);
         UserInfo.lastAction = UserInfo.UserAction.Submit;
         currentLevel.completed = true;
-        QuitAnalysis();
+        userMessageText.text = String.Format("Well Done your score is {0:0}",trainingGM.CurrentScore) ;
+        // QuitAnalysis();
     }
     public void ResetAll()
     {
         currentLevel.completed = false;
 
         // Remove From Screen 
-        instance.DeleteMarkers();
+        instance.DeleteMarkersFromScreen();
 
         // Remove from Level Data 
         currentLevel.resetMarkers();
@@ -148,16 +153,20 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
         // Remove from DataBase 
         Database.eraseLevelData(currentLevel);
 
+        // Updating User Text
+        userMessageText.text = "";
+        
         // Update Score 
         // currentLevel.updateLevelData();
         trainingGM.updatePlayerData(currentLevel.markers);
+        
         UserInfo.lastAction = UserInfo.UserAction.ResetAll;
     }
 
     public void ResetLastSaved()
     {
         // Remove From Screen 
-        instance.DeleteMarkers();
+        instance.DeleteMarkersFromScreen();
 
         // Remove from Level Data 
         currentLevel.resetMarkers();
@@ -194,11 +203,37 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
         }
     }
 
+    private void playRelevantSound()
+    {
+        switch (trainingGM.LastUserAction)
+        {
+            // Correct Action sound 
+            case FingerPrintTrainingGameManager.UserPlayAction.FirstCorrectInsert:
+            case FingerPrintTrainingGameManager.UserPlayAction.CorrectInsert:
+            case FingerPrintTrainingGameManager.UserPlayAction.CorrectDelete:
+                break;
+
+            // Incorrect Action sound 
+            case FingerPrintTrainingGameManager.UserPlayAction.IncorrectInsert:
+            case FingerPrintTrainingGameManager.UserPlayAction.IncorrectDelete:
+                break;
+
+            default:
+                localLog("No recognised action");
+                break;
+        }
+    }
+
     public void updateScoreData()
     {
         trainingGM.updatePlayerData(currentLevel.markers);
-        globalLog("Last Action Text " + trainingGM.PastActionText);
-        globalLog("Hint " + trainingGM.getHintText());
+        userMessageText.text = trainingGM.PastActionText ;
+        playRelevantSound(); 
+    }
+
+    public void getHint()
+    {
+        userMessageText.text = trainingGM.getHintText() ;
     }
 
     public static void updateAction(DeltaCore.UserLevelAction action, GameObject affectedObject)
@@ -208,7 +243,7 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
             UserInfo.lastAction = UserInfo.UserAction.LevelAction;
             currentLevel.LastLevelAction = action;
             instance.SaveMarkers();
-            if (action == DeltaCore.UserLevelAction.RemoveMarker) { fixfirstDeleteBug(affectedObject); }
+            // if (action == DeltaCore.UserLevelAction.RemoveMarker) { fixfirstDeleteBug(affectedObject); }
             // currentLevel.updateLevelData();
             instance.updateScoreData();
             instance.localLog("# currentLevel markers " + currentLevel.markers.Count.ToString());

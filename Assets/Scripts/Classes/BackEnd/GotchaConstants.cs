@@ -48,10 +48,10 @@ namespace DeltaCoreBE
 
         // BIO Conference 
 
-        // public const string GOTCHA_HOST = "127.0.0.1";
-        // public const string GOTCHA_USERNAME = "dcremote";
-        // public const string GOTCHA_PASSWORD = "1qazxcde3@WS";
-        // public const string GOTCHA_DBNAME = "playertw_deltacore";
+        public const string GOTCHA_HOST = "127.0.0.1";
+        public const string GOTCHA_USERNAME = "dcremote";
+        public const string GOTCHA_PASSWORD = "1qazxcde3@WS";
+        public const string GOTCHA_DBNAME = "playertw_deltacore";
 
 
         // DB TEST LOCAL
@@ -62,11 +62,10 @@ namespace DeltaCoreBE
         // public const string GOTCHA_DBNAME = "dc_data";
 
         // BD Production 
-
-        public const string GOTCHA_HOST = "130.56.248.86";
-        public const string GOTCHA_USERNAME = "dcremote";
-        public const string GOTCHA_PASSWORD = "1qazxcde3@WS";
-        public const string GOTCHA_DBNAME = "playertw_deltacore";
+        // public const string GOTCHA_HOST = "130.56.248.86";
+        // public const string GOTCHA_USERNAME = "dcremote";
+        // public const string GOTCHA_PASSWORD = "1qazxcde3@WS";
+        // public const string GOTCHA_DBNAME = "playertw_deltacore";
 
 
         public const int DEFAULT_ADDER_USER_ID = -1;

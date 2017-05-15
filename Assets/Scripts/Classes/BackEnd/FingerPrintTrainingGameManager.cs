@@ -29,7 +29,6 @@ namespace DeltaCoreBE
         private const int completedValue = 650;
         private const int perfectedValue = 750;
 
-
         private static bool debugOn = false;
         private static void localLog(string msg) { localLog("FingerPrintTrainingGameManager", msg); }
         private static void localLog(string topic, string msg)
