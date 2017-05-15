@@ -97,6 +97,7 @@ public class FeatureMarker : MonoBehaviour, IPointerClickHandler, IPointerDownHa
 
 
     }
+		
 
     private void logAction(string action, string tag = "")
     {
@@ -133,6 +134,23 @@ public class FeatureMarker : MonoBehaviour, IPointerClickHandler, IPointerDownHa
                 spriteRenderer.color = new Color(0, 1, 0, alpha);
                 break;
         }
+			
+		if (Input.GetKeyDown(KeyCode.LeftControl))
+		{
+			if (!placed)
+			{
+				BoxCollider2D collider = this.GetComponent<BoxCollider2D>();
+				collider.enabled = false;
+			}
+		}
+		else if (Input.GetKeyUp(KeyCode.LeftControl))
+		{
+			if (!placed)
+			{
+				BoxCollider2D collider = this.GetComponent<BoxCollider2D>();
+				collider.enabled = true;
+			}
+		}
 
         //JUST FOR TEST
 
@@ -278,27 +296,33 @@ public class FeatureMarker : MonoBehaviour, IPointerClickHandler, IPointerDownHa
         
 		GameObject lastObjectAccessed;  
 
+		//Left Control and Left Mouse 
+		if (eventData.button == PointerEventData.InputButton.Left) {
+
+			print ("attempting delete");
+			if (Input.GetKey(KeyCode.LeftControl))
+			{
+				print ("lc pressed");
+				//if (placed)
+				//{
+					lastObjectAccessed = gameObject;
+					logAction("Marker in position: " + transform.localPosition + " has been erased", "marker");
+					//Erase Marker
+					GameObject.Destroy(gameObject);
+					// Score Calculation after each Remove
+					updateAction(DeltaCore.UserLevelAction.RemoveMarker, lastObjectAccessed);
+				//}
+				clickedDown = false;
+				return;
+			}
+		}
+
         //isInPlacingMode = false;
         //if (isInPlacingMode)
 		if (eventData.button == PointerEventData.InputButton.Left)
 		{
 			PlaceMarker();
             return;     
-        }
-
-
-        //Left Control and Left Mouse 
-        if (eventData.button == PointerEventData.InputButton.Left && Input.GetKey(KeyCode.LeftControl)) {
-            if (Input.GetKey(KeyCode.LeftControl)){
-                lastObjectAccessed = gameObject;
-                logAction("Marker in position: " + transform.localPosition + " has been erased", "marker");
-                //Erase Marker
-                GameObject.Destroy(gameObject);
-                // Score Calculation after each Remove
-                updateAction(DeltaCore.UserLevelAction.RemoveMarker, lastObjectAccessed);
-				clickedDown = false;
-                return;
-            }
         }
 
 
@@ -313,7 +337,7 @@ public class FeatureMarker : MonoBehaviour, IPointerClickHandler, IPointerDownHa
             if (eventData.button == PointerEventData.InputButton.Middle) { ToggleOrientation(); }
         }
 
-		//clickedDown = false;
+		clickedDown = false;
     }
 
     private float AngleBetweenVector2(Vector2 vec1, Vector2 vec2)
