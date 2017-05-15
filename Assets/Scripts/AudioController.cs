@@ -274,4 +274,14 @@ public class AudioController : MonoBehaviour
 	{
 		Play(_audioClips[2], 1f, 1f);
 	}
+
+	public void Correct()
+	{
+		Play(_audioClips[1], 1f, 1f);
+	}
+
+	public void Incorrect()
+	{
+		Play(_audioClips[8], 1f, 1f);
+	}
 }

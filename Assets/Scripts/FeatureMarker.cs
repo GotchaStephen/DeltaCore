@@ -285,37 +285,49 @@ public class FeatureMarker : MonoBehaviour, IPointerClickHandler, IPointerDownHa
 
 		logAction("Marker has been created in position: " + transform.localPosition + " with confidence level of: " + confidenceLevel.ToString(), "marker");
 		print ("success!");
+
 		// Score Calculation after each Add
 		updateAction(DeltaCore.UserLevelAction.AddMarker, lastObjectAccessed);
+
 		//updateAction(DeltaCore.UserLevelAction.AddMarker, gameObject);
 		isInPlacingMode = true;
+
 		clickedDown = false;
 	}
 
-    public void OnPointerClick(PointerEventData eventData) {
-        
-		GameObject lastObjectAccessed;  
+	public void DeleteMarker()
+	{
+		GameObject lastObjectAccessed;
+		lastObjectAccessed = gameObject;
 
-		//Left Control and Left Mouse 
-		if (eventData.button == PointerEventData.InputButton.Left) {
+		logAction("Marker in position: " + transform.localPosition + " has been erased", "marker");
 
-			print ("attempting delete");
+		//Erase Marker
+		GameObject.Destroy(gameObject);
+
+		// Score Calculation after each Remove
+		updateAction(DeltaCore.UserLevelAction.RemoveMarker, lastObjectAccessed);
+
+		clickedDown = false;
+	}
+
+    public void OnPointerClick(PointerEventData eventData)
+	{
+		// Left Mouse 
+		if (eventData.button == PointerEventData.InputButton.Left)
+		{
+			//Left Control 
 			if (Input.GetKey(KeyCode.LeftControl))
 			{
-				print ("lc pressed");
-				//if (placed)
-				//{
-					lastObjectAccessed = gameObject;
-					logAction("Marker in position: " + transform.localPosition + " has been erased", "marker");
-					//Erase Marker
-					GameObject.Destroy(gameObject);
-					// Score Calculation after each Remove
-					updateAction(DeltaCore.UserLevelAction.RemoveMarker, lastObjectAccessed);
-				//}
-				clickedDown = false;
-				return;
+				DeleteMarker();
 			}
+			else
+			{
+				PlaceMarker(); 
+			}
+			return; 
 		}
+<<<<<<< HEAD
 
         //isInPlacingMode = false;
         //if (isInPlacingMode)
@@ -343,8 +355,12 @@ public class FeatureMarker : MonoBehaviour, IPointerClickHandler, IPointerDownHa
 
 =======
 >>>>>>> origin/master
+=======
+			
+>>>>>>> origin/master
         //if double-click is detected
-        if (eventData.clickCount == 2) {
+        if (eventData.clickCount == 2)
+		{
             eventData.clickCount = 0;
 
             // Right double-click Change confidence

@@ -246,8 +246,19 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
             // if (action == DeltaCore.UserLevelAction.RemoveMarker) { fixfirstDeleteBug(affectedObject); }
             // currentLevel.updateLevelData();
             instance.updateScoreData();
+<<<<<<< HEAD
             instance.localLog("# currentLevel markers " + currentLevel.markers.Count.ToString());
+=======
+			//play associated sound
+			instance.playSound();
+>>>>>>> origin/master
         }
     }
+
+	public void playSound()
+	{
+		//play associated sound
+		trainingGM.playGuessSound();
+	}
 
 }
