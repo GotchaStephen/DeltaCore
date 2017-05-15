@@ -30,7 +30,7 @@ namespace DeltaCoreBE
         private const int perfectedValue = 750;
 
 
-        private static bool debugOn = true;
+        private static bool debugOn = false;
         private static void localLog(string msg) { localLog("FingerPrintTrainingGameManager", msg); }
         private static void localLog(string topic, string msg)
         {
@@ -78,9 +78,11 @@ namespace DeltaCoreBE
 
         private float currentCost;
         public float CurrentCost { get { return currentCost; } }
-        #endregion
 
         private string pastActionText;
+        public string PastActionText { get { return pastActionText; } }
+        #endregion
+
 
         private FingerPrintPlayerToSolutionAnalysis fpP2S;
         public FingerPrintTrainingGameManager(ArrayList userData, List<FingerPrintAnalysisPoint> solutionData)
@@ -201,6 +203,10 @@ namespace DeltaCoreBE
             printSummary(); 
         }
 
+        public string getHintText()
+        {
+            return String.Format("You have {0} Corrent features, {1} Incorrect features and {2} Missing Features, good luck.", fpP2S.NumberOfSubstitutes, fpP2S.NumberOfDeletes, fpP2S.NumberOfInserts );
+        }
         public void printSummary()
         {
             localLog(String.Format("Past [I:{0}] [S:{1}] [D:{2}]", PastNumberOfInserts, PastNumberOfSubstitutes, PastNumberOfDeletes));

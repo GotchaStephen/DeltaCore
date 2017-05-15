@@ -280,12 +280,6 @@ public class FeatureMarker : MonoBehaviour, IPointerClickHandler, IPointerDownHa
 
         //isInPlacingMode = false;
         //if (isInPlacingMode)
-		if (eventData.button == PointerEventData.InputButton.Left)
-		{
-			PlaceMarker();
-            return;     
-        }
-
 
         //Left Control and Left Mouse 
         if (eventData.button == PointerEventData.InputButton.Left && Input.GetKey(KeyCode.LeftControl)) {
@@ -301,6 +295,11 @@ public class FeatureMarker : MonoBehaviour, IPointerClickHandler, IPointerDownHa
             }
         }
 
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            PlaceMarker();
+            return;
+        }
 
         //if double-click is detected
         if (eventData.clickCount == 2) {

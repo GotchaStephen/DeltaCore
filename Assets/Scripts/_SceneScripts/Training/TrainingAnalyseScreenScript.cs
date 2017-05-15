@@ -12,15 +12,15 @@ using DeltaCoreBE;
 public class TrainingAnalyseScreenScript : MonoBehaviour
 {
     [SerializeField]
-    public static bool debugOn = true;
-    private static void localLog(string msg) { localLog("TrainingAnalyseScreenScript", msg); }
-    private static void localLog(string topic, string msg)
+    const string className = "TrainingAnalyseScreenScript" ; 
+    public bool localOn = true;
+    public bool globalOn = true;
+    private void localLog(string msg, string topic = "L:" + className){ if (localOn)  { logMsg(msg, topic); }}
+    private void globalLog(string msg, string topic = "G:" + className){ if (globalOn) { logMsg(msg, "G:" + className); }}
+    private void logMsg(string msg, string topic)
     {
-        if (debugOn)
-        {
-            string logEntry = string.Format("{0:F}: [{1}] {2}", System.DateTime.Now, topic, msg);
-            Debug.Log(logEntry);
-        }
+        string logEntry = string.Format("{0:F}: [{1}] {2}", System.DateTime.Now, topic, msg);
+        Debug.Log(logEntry);
     }
 
     private static TrainingAnalyseScreenScript instance;
@@ -63,7 +63,8 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
             GameObject marker = Instantiate(featureMarkerPrefab, fingerPrint.transform);
             marker.GetComponent<FeatureMarker>().Init(md);
         }
-
+        localLog("# currentLevel markers " + currentLevel.markers.Count.ToString());
+        localLog("# solution markers " + currentLevel.solutionPoints.Count.ToString());
         // Loading Markers ( User and Solution )
         trainingGM = new FingerPrintTrainingGameManager(currentLevel.markers, currentLevel.solutionPoints) ;
 
@@ -94,10 +95,14 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
     public void SaveMarkers()
     {
         currentLevel.resetMarkers();
+        
         foreach (FeatureMarker marker in fingerPrint.GetComponentsInChildren<FeatureMarker>())
         {
-            if (!marker.isInPlacingMode) { currentLevel.markers.Add(new MarkerData(marker)); }
+            if (marker.placed) { currentLevel.markers.Add(new MarkerData(marker)); }
+            // if (!marker.isInPlacingMode) { currentLevel.markers.Add(new MarkerData(marker)); }
+            //   currentLevel.markers.Add(new MarkerData(marker)) ;
         }
+        localLog("# currentLevel markers " + currentLevel.markers.Count.ToString());
     }
     public void DeleteMarkers()
     {
@@ -179,7 +184,7 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
             if (marker.position == affectedObjectPosition)
             {
                 buggyElements.Add(counter);
-                localLog("Action", string.Format("Bug Detected @ index[{0}]", counter));
+                instance.localLog(string.Format("Bug Detected @ index[{0}]", counter));
             }
             counter++;
         }
@@ -192,6 +197,8 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
     public void updateScoreData()
     {
         trainingGM.updatePlayerData(currentLevel.markers);
+        globalLog("Last Action Text " + trainingGM.PastActionText);
+        globalLog("Hint " + trainingGM.getHintText());
     }
 
     public static void updateAction(DeltaCore.UserLevelAction action, GameObject affectedObject)
@@ -204,6 +211,7 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
             if (action == DeltaCore.UserLevelAction.RemoveMarker) { fixfirstDeleteBug(affectedObject); }
             // currentLevel.updateLevelData();
             instance.updateScoreData();
+            instance.localLog("# currentLevel markers " + currentLevel.markers.Count.ToString());
         }
     }
 
