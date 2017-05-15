@@ -211,11 +211,13 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
             case FingerPrintTrainingGameManager.UserPlayAction.FirstCorrectInsert:
             case FingerPrintTrainingGameManager.UserPlayAction.CorrectInsert:
             case FingerPrintTrainingGameManager.UserPlayAction.CorrectDelete:
+				AudioController.instance.Correct();
                 break;
 
             // Incorrect Action sound 
             case FingerPrintTrainingGameManager.UserPlayAction.IncorrectInsert:
             case FingerPrintTrainingGameManager.UserPlayAction.IncorrectDelete:
+				AudioController.instance.Incorrect();
                 break;
 
             default:
@@ -246,19 +248,9 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
             // if (action == DeltaCore.UserLevelAction.RemoveMarker) { fixfirstDeleteBug(affectedObject); }
             // currentLevel.updateLevelData();
             instance.updateScoreData();
-<<<<<<< HEAD
+
             instance.localLog("# currentLevel markers " + currentLevel.markers.Count.ToString());
-=======
-			//play associated sound
-			instance.playSound();
->>>>>>> origin/master
+
         }
     }
-
-	public void playSound()
-	{
-		//play associated sound
-		trainingGM.playGuessSound();
-	}
-
 }

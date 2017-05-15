@@ -327,37 +327,7 @@ public class FeatureMarker : MonoBehaviour, IPointerClickHandler, IPointerDownHa
 			}
 			return; 
 		}
-<<<<<<< HEAD
-
-        //isInPlacingMode = false;
-        //if (isInPlacingMode)
-
-<<<<<<< HEAD
-        //Left Control and Left Mouse 
-        if (eventData.button == PointerEventData.InputButton.Left && Input.GetKey(KeyCode.LeftControl)) {
-            if (Input.GetKey(KeyCode.LeftControl)){
-                lastObjectAccessed = gameObject;
-                logAction("Marker in position: " + transform.localPosition + " has been erased", "marker");
-                //Erase Marker
-                GameObject.Destroy(gameObject);
-                // Score Calculation after each Remove
-                updateAction(DeltaCore.UserLevelAction.RemoveMarker, lastObjectAccessed);
-				clickedDown = false;
-                return;
-            }
-        }
-
-        if (eventData.button == PointerEventData.InputButton.Left)
-        {
-            PlaceMarker();
-            return;
-        }
-
-=======
->>>>>>> origin/master
-=======
 			
->>>>>>> origin/master
         //if double-click is detected
         if (eventData.clickCount == 2)
 		{
