@@ -218,14 +218,14 @@ public class AnalyseScreenScript : MonoBehaviour
     }
 
 
-    public static void updateAction(DeltaCore.UserLevelAction action, GameObject affectedObject)
+    public static void updateAction(DeltaCore.UserLevelAction action)
     {
         if (!currentLevel.completed)
         {
             UserInfo.lastAction = UserInfo.UserAction.LevelAction;
             currentLevel.LastLevelAction = action;
             instance.SaveMarkers();
-            if (action == DeltaCore.UserLevelAction.RemoveMarker) { fixfirstDeleteBug(affectedObject); }
+            // if (action == DeltaCore.UserLevelAction.RemoveMarker) { fixfirstDeleteBug(affectedObject); }
 
              //currentLevel.updateLevelData();
         }

@@ -29,7 +29,7 @@ public static class Database
         }
     }
 
-    public static bool Login(string username = "mahmoud.shadid@gmail.com", string password = "")
+    public static bool Login(string username = "sam.vimes@citywatch.com", string password = "")
     {
         Init();
         UserInfo.Reset();

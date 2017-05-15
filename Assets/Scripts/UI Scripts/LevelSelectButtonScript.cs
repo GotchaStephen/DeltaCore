@@ -24,15 +24,16 @@ using UnityEngine.SceneManagement;
 
 public class LevelSelectButtonScript : MonoBehaviour, IPointerClickHandler {
 
-    public bool debugOn = false;
-    private void localLog(string msg ) { localLog("LevelSelectButtonScript", msg); }
-    private void localLog(string topic, string msg)
+    [SerializeField]
+    const string className = "LevelSelectButtonScript";
+    public bool localOn = true;
+    public bool globalOn = true;
+    private void localLog(string msg, string topic = "L:" + className) { if (localOn) { logMsg(msg, topic); } }
+    private void globalLog(string msg, string topic = "G:" + className) { if (globalOn) { logMsg(msg, "G:" + className); } }
+    private void logMsg(string msg, string topic)
     {
-        if (debugOn)
-        {
-            string logEntry = string.Format("{0:F}:[{1}] {2}", System.DateTime.Now, topic, msg);
-            Debug.Log(logEntry);
-        }
+        string logEntry = string.Format("{0:F}: [{1}] {2}", System.DateTime.Now, topic, msg);
+        Debug.Log(logEntry);
     }
 
     [SerializeField]
@@ -63,6 +64,7 @@ public class LevelSelectButtonScript : MonoBehaviour, IPointerClickHandler {
         Start();
         this.level = level;
         this.levelNumber = levelNumber;
+        // localLog("Setting" + levelNumber.ToString() + "-" + level.sampleId);
 
         switch (level.difficulty) {
             case DeltaCore.LevelDifficulty.Easy:
@@ -80,7 +82,8 @@ public class LevelSelectButtonScript : MonoBehaviour, IPointerClickHandler {
         }
 
         icon.sprite = level.fingerPrint;
-        label.text = "S#" + levelNumber.ToString("000");
+        // localLog("S#" + levelNumber.ToString("000") + "-" + level.sampleId);
+        label.text = ""; // "S#" + levelNumber.ToString("000");
     }
 
     public FingerprintLevel GetLevel() {

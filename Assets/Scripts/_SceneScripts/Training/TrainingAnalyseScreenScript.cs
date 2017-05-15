@@ -96,16 +96,24 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
         LogAction(action, "untagged");
     }
 
+    private void printLevelScreenMarkers()
+    {
+        foreach (FeatureMarker marker in fingerPrint.GetComponentsInChildren<FeatureMarker>())
+        {
+            if (marker.placed) { localLog(String.Format("Adding Marker {0}", marker.ToString())); }
+            else { localLog(String.Format("Ignoring Marker {0}", marker.ToString())); }
+        }
+        localLog(String.Format("Markers [Screen:{0}, Level{1}]", fingerPrint.GetComponentsInChildren<FeatureMarker>().Length.ToString(), currentLevel.markers.Count.ToString())); 
+    }
+
     public void SaveMarkers()
     {
         currentLevel.resetMarkers();
         foreach (FeatureMarker marker in fingerPrint.GetComponentsInChildren<FeatureMarker>())
         {
-            if ( marker.placed ) { currentLevel.markers.Add(new MarkerData(marker)); }
-            // if (!marker.isInPlacingMode) { currentLevel.markers.Add(new MarkerData(marker)); }
-            //   currentLevel.markers.Add(new MarkerData(marker)) ;
+            if (marker.placed) { currentLevel.markers.Add(new MarkerData(marker)); }
         }
-        localLog("# currentLevel markers " + currentLevel.markers.Count.ToString());
+        // localLog("# currentLevel markers " + currentLevel.markers.Count.ToString());
     }
     private void DeleteMarkersFromScreen()
     {
@@ -238,7 +246,7 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
         userMessageText.text = trainingGM.getHintText() ;
     }
 
-    public static void updateAction(DeltaCore.UserLevelAction action, GameObject affectedObject)
+    public static void updateAction(DeltaCore.UserLevelAction action)
     {
         if (!currentLevel.completed)
         {
@@ -248,9 +256,8 @@ public class TrainingAnalyseScreenScript : MonoBehaviour
             // if (action == DeltaCore.UserLevelAction.RemoveMarker) { fixfirstDeleteBug(affectedObject); }
             // currentLevel.updateLevelData();
             instance.updateScoreData();
-
-            instance.localLog("# currentLevel markers " + currentLevel.markers.Count.ToString());
-
+//             instance.localLog("# currentLevel markers " + currentLevel.markers.Count.ToString());
+            instance.printLevelScreenMarkers(); 
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 
 public class LevelScreenLoaderScript : MonoBehaviour {
 
-    public bool debugOn = false ;
+    public bool debugOn = true ;
     private void localLog(string msg = "No message") { localLog("LevelScreenLoaderScript", msg); }
     private void localLog(string topic, string msg)
     {
@@ -81,7 +81,7 @@ public class LevelScreenLoaderScript : MonoBehaviour {
             level.transform.SetParent(this.transform);
             LevelSelectButtonScript levelButton = level.GetComponent<LevelSelectButtonScript>();
             levelButton.SetLevel(levelsToShow[i], levelsToShow[i].sampleId);
-            localLog(string.Format("Loading {0}", levelsToShow[i])); 
+            localLog(string.Format("Loading {0}:{1}", levelsToShow[i], levelsToShow[i].sampleId)); 
         }
     }
 

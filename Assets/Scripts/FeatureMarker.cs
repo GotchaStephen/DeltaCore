@@ -23,6 +23,22 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(SpriteRenderer))]
 public class FeatureMarker : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IDragHandler,  IEndDragHandler {
 
+
+    #region Logging 
+    [SerializeField]
+    const string className = "FeatureMarker";
+    public bool localOn = true;
+    public bool globalOn = true;
+    private void localLog(string msg, string topic = "L:" + className) { if (localOn) { logMsg(msg, topic); } }
+    private void globalLog(string msg, string topic = "G:" + className) { if (globalOn) { logMsg(msg, "G:" + className); } }
+    private void logMsg(string msg, string topic)
+    {
+        string logEntry = string.Format("{0:F}: [{1}] {2}", System.DateTime.Now, topic, msg);
+        Debug.Log(logEntry);
+    }
+
+    #endregion
+
     //Variables for Unity
     [SerializeField]
     private Sprite markerWithoutOrientation, markerWithOrientation;
@@ -265,14 +281,14 @@ public class FeatureMarker : MonoBehaviour, IPointerClickHandler, IPointerDownHa
 		PlaceMarker();
     }
 
-    private void updateAction(DeltaCore.UserLevelAction action, GameObject lastObjectAccessed)
+    private void updateAction(DeltaCore.UserLevelAction action)
     {
         if ( UserInfo.currentGameMode == DeltaCore.GameMode.Training)
         {
-            TrainingAnalyseScreenScript.updateAction(action, lastObjectAccessed);
+            TrainingAnalyseScreenScript.updateAction(action);
         } else
         {
-            AnalyseScreenScript.updateAction(action, lastObjectAccessed);
+            AnalyseScreenScript.updateAction(action);
         }
     }
 
@@ -283,16 +299,15 @@ public class FeatureMarker : MonoBehaviour, IPointerClickHandler, IPointerDownHa
 		FeatureMarker script = lastObjectAccessed.GetComponent<FeatureMarker>();
 		script.placed = true;
 
-		logAction("Marker has been created in position: " + transform.localPosition + " with confidence level of: " + confidenceLevel.ToString(), "marker");
-		print ("success!");
+		// logAction("Marker has been created in position: " + transform.localPosition + " with confidence level of: " + confidenceLevel.ToString(), "marker");
+        localLog(String.Format("Marker placed in position:{0} with confidence level of:{1}", transform.localPosition, confidenceLevel.ToString()));
+        print ("success!");
 
 		// Score Calculation after each Add
-		updateAction(DeltaCore.UserLevelAction.AddMarker, lastObjectAccessed);
+		updateAction(DeltaCore.UserLevelAction.AddMarker);
 
-		//updateAction(DeltaCore.UserLevelAction.AddMarker, gameObject);
 		isInPlacingMode = true;
-
-		clickedDown = false;
+        clickedDown = false;
 	}
 
 	public void DeleteMarker()
@@ -300,16 +315,16 @@ public class FeatureMarker : MonoBehaviour, IPointerClickHandler, IPointerDownHa
 		GameObject lastObjectAccessed;
 		lastObjectAccessed = gameObject;
 
-		logAction("Marker in position: " + transform.localPosition + " has been erased", "marker");
+        //Erase Marker
+        localLog(String.Format("Marker erased in position:{0}", gameObject.transform.localPosition));
+        GameObject.DestroyImmediate(gameObject);
 
-		//Erase Marker
-		GameObject.Destroy(gameObject);
-
-		// Score Calculation after each Remove
-		updateAction(DeltaCore.UserLevelAction.RemoveMarker, lastObjectAccessed);
+        // Score Calculation after each Remove
+        updateAction(DeltaCore.UserLevelAction.RemoveMarker);
 
 		clickedDown = false;
-	}
+        // placed = false;
+    }
 
     public void OnPointerClick(PointerEventData eventData)
 	{
@@ -349,6 +364,9 @@ public class FeatureMarker : MonoBehaviour, IPointerClickHandler, IPointerDownHa
         float sign = (vec2.y > vec1.y) ? -1.0f : 1.0f;
         return Vector2.Angle(Vector2.right, diference) * sign;
     }
-
+    public override string ToString()
+    {
+        return String.Format("Marker [{0},{1}][{2}][{3}]", transform.localPosition.x , transform.localPosition.y, placed, confidenceLevel);
+    }
 
 }
