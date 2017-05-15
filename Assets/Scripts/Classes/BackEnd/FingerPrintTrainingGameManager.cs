@@ -122,31 +122,32 @@ namespace DeltaCoreBE
             switch (lastUserAction)
             {
                 case UserPlayAction.NoAction :
-                    pastActionText = "Good Luck";
+                    pastActionText = "Good Luck!";
                     break;
 
                 case UserPlayAction.FirstCorrectInsert:
-                    pastActionText = "Congradulations on your first correct point, Keep Going Robocop believes in you";
+                    pastActionText = "Congratulations on your first correct point! Keep going, Robocop believes in you";
                     break;
 
                 case UserPlayAction.CorrectInsert:
-                    pastActionText = "Another great find, keep going you are a natural";
+                    pastActionText = "Another great find, keep at it, you are a natural";
                     break;
 
                 case UserPlayAction.IncorrectDelete:
-                    pastActionText = "Why did you remove that one ? that was a correct feature";
+                    pastActionText = "Why did you remove that one? That was a correct feature";
                     break;
                 case UserPlayAction.IncorrectInsert:
                     pastActionText = "Oops, I could not detect a feature at that point";
                     break;
                 case UserPlayAction.CorrectDelete:
-                    pastActionText = "good spot, that wasnt a feature";
+                    pastActionText = "Good spot, that wasn't a feature";
                     break;
                 default:
                     pastActionText = "Unknown Unspecified Action";
                     break;
             }
         }
+
         private void updateTypeOfAction()
         {
             if (pastNumberOfSubstitutes == 0 && fpP2S.NumberOfSubstitutes == 1)
