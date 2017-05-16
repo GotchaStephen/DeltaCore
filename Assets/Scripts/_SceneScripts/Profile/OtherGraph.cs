@@ -32,6 +32,10 @@ public class OtherGraph : MonoBehaviour {
 	bool toggleWA = true;
 	bool toggleNT = true;
 
+	public Color NSWhue;
+	public Color VIChue;
+	public Color QLDhue;
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -95,6 +99,24 @@ public class OtherGraph : MonoBehaviour {
 
 		//Instantiate
 		GameObject newPoint = Instantiate(pointPrefab);
+
+		//Colour demo data
+		Color color = newPoint.GetComponent<Renderer>().material.color;
+		if (entry.state == "NSW")
+		{
+			color = NSWhue;
+			newPoint.GetComponent<Renderer>().material.color = color;
+		}
+		else if (entry.state == "VIC")
+		{
+			color = VIChue;
+			newPoint.GetComponent<Renderer>().material.color = color;
+		}
+		else if (entry.state == "QLD")
+		{
+			color = QLDhue;
+			newPoint.GetComponent<Renderer>().material.color = color;
+		}
 
 		string pointName = counter.ToString();
 		newPoint.name = pointName;
