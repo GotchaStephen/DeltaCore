@@ -35,7 +35,9 @@ public class CameraTransformations : MonoBehaviour {
     Vector2 lastMouseClick;
     Vector3 lastRotation;
     Vector3 lastPosition;
-    public float mouseSensitivity;
+	[HideInInspector]
+	public float mouseSensitivity = -0.005f;
+
 
     public void setMouseSensitivity(float value) {
         if (mouseSensitivity < 0) {
