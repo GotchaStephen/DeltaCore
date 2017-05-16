@@ -144,14 +144,16 @@ public class ImageProcessingController : MonoBehaviour {
 
     void Update() {
 
-        if (Input.GetKeyDown(KeyCode.Mouse0)) {
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+		{
             lastMouseClick = Input.mousePosition;
             lastRotation = transform.eulerAngles;
         }
 
 
         //Temporary code for rotation, replace with a rotation system that takes into consideration the starting rotation level of the image.
-        if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.Mouse0)) {
+        if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.Mouse0))
+		{
             Vector3 mouse_pos = Input.mousePosition;
             mouse_pos.z = 10; //The distance between the camera and object
             Vector3 object_pos = Camera.main.WorldToScreenPoint(transform.position);
@@ -159,7 +161,7 @@ public class ImageProcessingController : MonoBehaviour {
             mouse_pos.y = mouse_pos.y - object_pos.y;
             float angle = Mathf.Atan2(mouse_pos.y, mouse_pos.x) * Mathf.Rad2Deg;
             
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle-90f));
+			transform.rotation = Quaternion.Euler(new Vector3(0, 0, (angle - 90f) ));
         }
     }
 }

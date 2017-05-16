@@ -75,7 +75,8 @@ public class CameraTransformations : MonoBehaviour {
             lastPosition = Input.mousePosition;
         }
 
-        if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.Mouse1)) {
+        if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.Mouse1))
+		{
             Vector3 delta  = Input.mousePosition - lastPosition;
             transform.Translate(delta.x * mouseSensitivity, delta.y * mouseSensitivity, 0);
             lastPosition = Input.mousePosition;
