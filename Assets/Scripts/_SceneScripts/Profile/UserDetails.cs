@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UserDetails : MonoBehaviour {
 
@@ -18,20 +19,26 @@ public class UserDetails : MonoBehaviour {
 	public bool updateState;
 	public bool updateCountry;
 
+	public Text usernameText;
+	public Text emailText;
+	public Text locationText;
+
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
 		GetDetails();
 		ResetFlags();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 
 	public void DisplayDetails()
 	{
-		
+		if (UserInfo.firstName != null && UserInfo.lastName != null){usernameText.text = UserInfo.firstName + " " + UserInfo.lastName;}
+		else {usernameText.text = "NOT SET";}
+
+		if (UserInfo.username != null ){emailText.text = UserInfo.username;}
+		else {emailText.text = "NOT SET";}
+
+		locationText.text = "Australia";
 	}
 
 	public void UpdateEmail()
@@ -61,11 +68,7 @@ public class UserDetails : MonoBehaviour {
 	public void GetDetails()
 	{
 		// Update fields upon scene load
-
-		// Get username
-		// Get email
-		// Get state
-		// Get country
+		DisplayDetails();
 
 		// Get trophies
 		DisplayTrophies();

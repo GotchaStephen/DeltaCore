@@ -48,16 +48,18 @@ public class TernaryPlotGraph : MonoBehaviour {
 		// Create new list of user specific points
 		for( int counter = 0 ; counter < points; counter++)
 		{
-			//if(GraphData.Entry[counter].uid == )
-			if(true)
+			if(GraphData.database[counter].userID == UserInfo.id)
 			{
-				//Then calculate point with these values
-				CalculatePoint(	(GraphData.database[counter].insertCost / GraphData.maxInsertCost), 
-								(GraphData.database[counter].substituteCost / GraphData.maxSubstituteCost), 
-								(GraphData.database[counter].deleteCost / GraphData.maxDeleteCost));
+				if(true)
+				{
+					//Then calculate point with these values
+					CalculatePoint(	(GraphData.database[counter].insertCost / GraphData.maxInsertCost), 
+									(GraphData.database[counter].substituteCost / GraphData.maxSubstituteCost), 
+									(GraphData.database[counter].deleteCost / GraphData.maxDeleteCost));
 
-				//Finally, draw
-				DrawPoint(counter, GraphData.database[counter].verdict);
+					//Finally, draw
+					DrawPoint(counter, GraphData.database[counter].verdict);
+				}
 			}
 
 			yield return new WaitForSeconds(0.2f);
