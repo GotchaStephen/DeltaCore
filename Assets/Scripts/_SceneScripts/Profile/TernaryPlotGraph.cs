@@ -48,7 +48,9 @@ public class TernaryPlotGraph : MonoBehaviour {
 		// Create new list of user specific points
 		for( int counter = 0 ; counter < points; counter++)
 		{
-			if(GraphData.database[counter].userID == UserInfo.id)
+			//if(GraphData.database[counter].userID == UserInfo.id)
+			//temp for showcase purposes, use code above for final version
+			if(GraphData.database[counter].userID == 17)
 			{
 				if(true)
 				{
